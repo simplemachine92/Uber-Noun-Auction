@@ -1,7 +1,8 @@
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity ^0.8.6;
 //SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import { MultiPartRLEToSVG } from '../nouns_contracts/libs/MultiPartRLEToSVG.sol';
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract GTC_UBER_NOUN is ERC721 {
@@ -22,14 +23,15 @@ contract GTC_UBER_NOUN is ERC721 {
     constructor() ERC721("GTC UBER-NOUN", "GUN") {
       //R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
     }
+    
 
-    function priceInDays(uint256 numDays) public view returns (uint256) {
+    /* function priceInDays(uint256 numDays) public view returns (uint256) {
       uint256 totalSecs = numDays * 86400;
       uint256 deduction = totalSecs * priceDeductionRate;
       uint256 futurePrice = currentPrice() - deduction;
 
         return futurePrice;
-    }
+    } */
 
     function currentPrice() public view returns (uint256) {
 
