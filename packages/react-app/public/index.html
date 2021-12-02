@@ -97,10 +97,12 @@ Seeded with <3 for early BUIDLers in the Moonshot Collective"
         image-rendering: -moz-crisp-edges;
         image-rendering: crisp-edges;
         padding-top: 10px;
-        width: 364px;
-        height: 364px;
-        max-width: 364px;
-        max-height: 364px;
+        padding-left: 20px;
+        width: 420px;
+        height: 420px;
+        max-width: 420px;
+        max-height: 420px;
+        margin-left: 10px;
         flex-direction: row;
       }
       .logo_moonshot.sub {
@@ -219,7 +221,6 @@ Seeded with <3 for early BUIDLers in the Moonshot Collective"
 
       h1 {
         position: relative;
-        top: -100px;
         font-family: "Avenir Next", sans-serif;
         font-weight: 900;
         font-size: 64px;
@@ -227,20 +228,20 @@ Seeded with <3 for early BUIDLers in the Moonshot Collective"
         font-style: italic;
         letter-spacing: 0.05em;
         display: inline-block;
-        margin-bottom: 0px;
+        margin-bottom: -20px;
         margin-left: 10px;
       }
 
       /* We create a pseudo element and blur it using the SVG filter. We’ll grab the content from the custom HTML attribute. */
 
-      h1:before {
+      /* h1:before {
         position: absolute;
         left: 0;
         top: 0;
         content: attr(filter-content);
 
         filter: url(#motion-blur-filter);
-      }
+      } */
       a:hover {
         color: #00ff88;
         font-weight: bold;
