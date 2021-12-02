@@ -37,6 +37,7 @@
     "deploy": "hardhat deploy --export-all ../react-app/src/contracts/hardhat_contracts.json",
     "postdeploy": "hardhat run scripts/publish.js",
     "watch": "node scripts/watch.js",
+    "uber_noun": "node scripts/uber_noun.js",
     "accounts": "hardhat accounts",
     "balance": "hardhat balance",
     "send": "hardhat send",
