@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { utils, ethers } from "ethers";
 import { Row, Card, Col, Image, Button, Divider } from "antd";
 import React, { useState } from "react";
 import { Address, Balance, Events } from "../components";
@@ -14,9 +14,8 @@ export default function AuctionCard({
   tx,
   readContracts,
   writeContracts,
+  priceToMint,
 }) {
-  const [newPurpose, setNewPurpose] = useState("loading...");
-
   const cardStyle = {
     paddingLeft: 20,
     paddingTop: 10,
@@ -35,14 +34,20 @@ export default function AuctionCard({
   return (
     <div className="App">
       <Row gutter={8}>
-        <img className="logo_moonshot" src="austinpixelmandalla.png" />
+        <img className="logo_moonshot" src="ubernoun.png" />
         <Col span={15}>
           <h1>GTC UBER-NOUN</h1>
           <div style={{ paddingLeft: 20, paddingTop: 10, paddingRight: 20 }}>
             <Card style={cardStyle} title="😈 👹 1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN 👹 😈 " bordered={false}>
               <h4>DUTCH AUCTION STARTING AT Ξ9,999,999</h4>
-              <Button type="primary" onClick={async () => {}}>
-                MINT for Ξ
+              <h2>DECREASING BY Ξ16.534 / Second</h2>
+              <Button
+                type="primary"
+                onClick={async () => {
+                  tx(writeContracts.GTC_UBER_NOUN.buy({ value: priceToMint }));
+                }}
+              >
+                MINT for Ξ{priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}
               </Button>
               <br />
               <h4>JUST PRESS THE BUTTON, ANON, AAAAAAHAHAHAAHAHHAA</h4>

@@ -43,7 +43,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+//const targetNetwork = NETWORKS.matic; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -69,7 +69,7 @@ function App(props) {
   const location = useLocation();
 
   /// 📡 What chain are your contracts deployed to?
-  const targetNetwork = NETWORKS[selectedNetwork]; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+  const targetNetwork = NETWORKS.matic; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
   // 🔭 block explorer URL
   const blockExplorer = targetNetwork.blockExplorer;
@@ -156,8 +156,7 @@ function App(props) {
   ]);
 
   // keep track of a variable from the contract in the local React state:
-  const purpose = useContractReader(readContracts, "YourContract", "purpose");
-
+  const priceToMint = useContractReader(readContracts, "GTC_UBER_NOUN", "currentPrice");
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
   console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
@@ -258,7 +257,7 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-          <Home yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
+          <Home writeContracts={writeContracts} readContracts={readContracts} priceToMint={priceToMint} tx={tx} />
         </Route>
         <Route exact path="/debug">
           {/*
@@ -268,7 +267,7 @@ function App(props) {
             */}
 
           <Contract
-            name="YourContract"
+            name="GTC_UBER_NOUN"
             price={price}
             signer={userSigner}
             provider={localProvider}
@@ -289,7 +288,7 @@ function App(props) {
             tx={tx}
             writeContracts={writeContracts}
             readContracts={readContracts}
-            purpose={purpose}
+            //purpose={purpose}
           />
         </Route>
         <Route path="/subgraph">
@@ -318,7 +317,6 @@ function App(props) {
             blockExplorer={blockExplorer}
           />
         </div>
-        <FaucetHint localProvider={localProvider} targetNetwork={targetNetwork} address={address} />
       </div>
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
