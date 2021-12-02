@@ -12,24 +12,13 @@ import { useExchangeEthPrice } from "eth-hooks/dapps/dex";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
 import "./App.css";
-import {
-  Account,
-  Contract,
-  Faucet,
-  GasGauge,
-  Header,
-  Ramp,
-  ThemeSwitch,
-  NetworkDisplay,
-  FaucetHint,
-  NetworkSwitch,
-} from "./components";
+import { Account, Contract, Faucet, GasGauge, Header, Ramp, NetworkDisplay, FaucetHint } from "./components";
 import { NETWORKS, ALCHEMY_KEY } from "./constants";
 import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
 import { Transactor, Web3ModalSetup } from "./helpers";
-import { Home, ExampleUI, Hints, Subgraph } from "./views";
+import { Home, ExampleUI, Subgraph } from "./views";
 import { useStaticJsonRPC } from "./hooks";
 import { Color } from "chalk";
 
@@ -312,8 +301,6 @@ function App(props) {
           />
         </Route>
       </Switch>
-
-      <ThemeSwitch />
 
       {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
       <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
