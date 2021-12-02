@@ -24,7 +24,9 @@ function Home({ yourLocalBalance, readContracts }) {
         <h1>GITCOIN UBER-NOUN</h1>
         <br />
         <h2>AN OMEGA RARE 1/1 PFP</h2>
-        <h2></h2>
+        <h2>
+          Made in collaboration with <a href="https://nouns.wtf/">NounsDAO</a>
+        </h2>
         <h2>
           Help fund <a href="https://gitcoin.co/grants/#match-pools">Gitcoin Grants Round12!</a>
         </h2>
