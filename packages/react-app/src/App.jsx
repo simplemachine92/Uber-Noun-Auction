@@ -69,7 +69,7 @@ function App(props) {
   const location = useLocation();
 
   /// 📡 What chain are your contracts deployed to?
-  const targetNetwork = NETWORKS.matic; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+  const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
   // 🔭 block explorer URL
   const blockExplorer = targetNetwork.blockExplorer;
@@ -267,7 +267,7 @@ function App(props) {
             */}
 
           <Contract
-            name="GTC_UBER_NOUN"
+            name="Simple"
             price={price}
             signer={userSigner}
             provider={localProvider}

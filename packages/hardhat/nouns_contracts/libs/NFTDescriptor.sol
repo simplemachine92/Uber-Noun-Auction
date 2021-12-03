@@ -17,8 +17,8 @@
 
 pragma solidity ^0.8.6;
 
-import { Base64 } from 'base64-sol/base64.sol';
-import { MultiPartRLEToSVG } from './MultiPartRLEToSVG.sol';
+import {Base64} from "base64-sol/base64.sol";
+import {MultiPartRLEToSVG} from "./MultiPartRLEToSVG.sol";
 
 library NFTDescriptor {
     struct TokenURIParams {
@@ -31,13 +31,15 @@ library NFTDescriptor {
     /**
      * @notice Construct an ERC721 token URI.
      */
-    function constructTokenURI(TokenURIParams memory params, mapping(uint8 => string[]) storage palettes)
-        public
-        view
-        returns (string memory)
-    {
+    function constructTokenURI(
+        TokenURIParams memory params,
+        mapping(uint8 => string[]) storage palettes
+    ) public view returns (string memory) {
         string memory image = generateSVGImage(
-            MultiPartRLEToSVG.SVGParams({ parts: params.parts, background: params.background }),
+            MultiPartRLEToSVG.SVGParams({
+                parts: params.parts,
+                background: params.background
+            }),
             palettes
         );
 
@@ -57,11 +59,13 @@ library NFTDescriptor {
     /**
      * @notice Generate an SVG image for use in the ERC721 token URI.
      */
-    function generateSVGImage(MultiPartRLEToSVG.SVGParams memory params, mapping(uint8 => string[]) storage palettes)
-        public
-        view
-        returns (string memory svg)
-    {
-        return Base64.encode(bytes(MultiPartRLEToSVG.generateSVG(params, palettes)));
+    function generateSVGImage(
+        MultiPartRLEToSVG.SVGParams memory params,
+        mapping(uint8 => string[]) storage palettes
+    ) public view returns (string memory svg) {
+        return
+            Base64.encode(
+                bytes(MultiPartRLEToSVG.generateSVG(params, palettes))
+            );
     }
 }
