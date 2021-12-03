@@ -43,20 +43,18 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
         string background;
     }
 
+    TokenURIParams[] private tParams;
+
     address payable public constant gitcoin =
         payable(0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6);
 
-    uint256 public startingPrice = 1000 ether;
+    uint256 public startingPrice = .1 ether;
     uint256 private constant limit = 1;
-    uint256 private constant priceDeductionRate = 16.534 ether;
+    uint256 private constant priceDeductionRate = 0.0001 ether;
     uint256 public startAt = block.timestamp;
     uint256 public mintDeadline = block.timestamp + 7 days;
 
     string public daName;
-
-    //string public uberSVG;
-
-    //bytes public uberURI;
 
     string public description;
 
@@ -67,7 +65,7 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
 
     bytes[] public gunParts;
 
-    mapping(uint8 => string[]) public gunPalette;
+    string[] public gunPalette;
 
     event Wtf(address winner, uint256 amount);
 
@@ -89,22 +87,26 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
         daName = _name;
         description = _description;
         background = _background;
-        gunPalette[0] = _palette;
+        gunPalette = _palette;
 
-        //generateSVG(params, gunPalette);
-        //constructTokenURI(daName, description, uberSVG);
+        tParams.push(
+            TokenURIParams({
+                name: daName,
+                description: description,
+                parts: gunParts,
+                background: background
+            })
+        );
     }
 
-    function generateSVG(
-        SVGParams memory params,
-        mapping(uint8 => string[]) storage palettes
-    ) internal view returns (string memory) {
+    function generateSVG() internal view returns (string memory) {
         // prettier-ignore
+
         return string(
             abi.encodePacked(
                 '<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">',
-                '<rect width="100%" height="100%" fill="#', params.background, '" />',
-                _generateSVGRects(params, palettes),
+                '<rect width="100%" height="100%" fill="#', tParams[0].background, '" />',
+                _generateSVGRects(),
                 '</svg>'
             )
         );
@@ -114,11 +116,12 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
      * @notice Given RLE image parts and color palettes, generate SVG rects.
      */
     // prettier-ignore
-    function _generateSVGRects(SVGParams memory params, mapping(uint8 => string[]) storage palettes)
+    function _generateSVGRects()
         private
         view
         returns (string memory svg)
     {
+
         string[33] memory lookup = [
             '0', '10', '20', '30', '40', '50', '60', '70', 
             '80', '90', '100', '110', '120', '130', '140', '150', 
@@ -127,9 +130,9 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
             '320' 
         ];
         string memory rects;
-        for (uint8 p = 0; p < params.parts.length; p++) {
-            DecodedImage memory image = _decodeRLEImage(params.parts[p]);
-            string[] storage palette = palettes[image.paletteIndex];
+        for (uint8 p = 0; p < tParams[0].parts.length; p++) {
+            DecodedImage memory image = _decodeRLEImage(tParams[0].parts[p]);
+            string[] storage palette = gunPalette;
             uint256 currentX = image.bounds.left;
             uint256 currentY = image.bounds.top;
             uint256 cursor;
@@ -223,19 +226,7 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
     function constructTokenURI() internal view returns (string memory) {
         // prettier-ignore
 
-        SVGParams memory params = SVGParams({
-            parts: gunParts,
-            background: background
-        });
-
-        TokenURIParams memory tokenParams = TokenURIParams({
-            name: daName,
-            description: description,
-            parts: gunParts,
-            background: background
-        });
-
-        string memory _uberSVG = generateSVG(params, gunPalette);
+        string memory _uberSVG = generateSVGImage();
 
         return
             string(
@@ -245,9 +236,9 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
                         bytes(
                             abi.encodePacked(
                                 '{"name":"',
-                                tokenParams.name,
+                                tParams[0].name,
                                 '", "description":"',
-                                tokenParams.description,
+                                tParams[0].description,
                                 '", "image": "',
                                 "data:image/svg+xml;base64,",
                                 _uberSVG,
@@ -257,6 +248,18 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
                     )
                 )
             );
+    }
+
+    /**
+     * @notice Return b64 encoded SVG image for use in the ERC721 token URI.
+     */
+    // prettier-ignore
+    function generateSVGImage()
+        private
+        view
+        returns (string memory svg)
+    {
+        return Base64.encode(bytes(generateSVG()));
     }
 
     function currentPrice() public view returns (uint256) {
@@ -278,8 +281,6 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
         require(success, "could not send");
 
         _tokenIds.increment();
-
-        constructTokenURI();
 
         uint256 id = _tokenIds.current();
         _mint(msg.sender, id);
