@@ -95,7 +95,7 @@ contract namechange is ERC721 {
         return price;
     }
 
-    function mintItem(address to, string memory tokenURI)
+    /* function mintItem(address to, string memory tokenURI)
         private
         returns (uint256)
     {
@@ -128,7 +128,7 @@ contract namechange is ERC721 {
         _setTokenURI(newItemId, tokenURI);
 
         return newItemId;
-    }
+    } */
 
     function buy() public payable returns (uint256) {
         require(_tokenIds.current() < limit, "DONE MINTING BOTS");

@@ -62,8 +62,6 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
 
     mapping(uint8 => string[]) public gunPalette;
 
-    mapping(uint256 => string) private _tokenURI;
-
     event Wtf(address winner, uint256 amount);
 
     constructor(
@@ -259,8 +257,6 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
         uint256 id = _tokenIds.current();
         _mint(msg.sender, id);
         _setTokenURI(id, uberURI);
-
-        _mint(msg.sender, id);
 
         emit Wtf(msg.sender, msg.value);
 
