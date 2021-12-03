@@ -36,6 +36,13 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
         Rect[] rects;
     }
 
+    struct TokenURIParams {
+        string name;
+        string description;
+        bytes[] parts;
+        string background;
+    }
+
     address payable public constant gitcoin =
         payable(0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6);
 
@@ -47,9 +54,9 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
 
     string public daName;
 
-    string public uberSVG;
+    //string public uberSVG;
 
-    string public uberURI;
+    //bytes public uberURI;
 
     string public description;
 
@@ -83,20 +90,17 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
         description = _description;
         background = _background;
         gunPalette[0] = _palette;
-        SVGParams memory params = SVGParams({
-            parts: gunParts,
-            background: background
-        });
-        generateSVG(params, gunPalette);
-        constructTokenURI(daName, description, uberSVG);
+
+        //generateSVG(params, gunPalette);
+        //constructTokenURI(daName, description, uberSVG);
     }
 
     function generateSVG(
         SVGParams memory params,
         mapping(uint8 => string[]) storage palettes
-    ) internal {
+    ) internal view returns (string memory) {
         // prettier-ignore
-        uberSVG = string(
+        return string(
             abi.encodePacked(
                 '<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">',
                 '<rect width="100%" height="100%" fill="#', params.background, '" />',
@@ -216,22 +220,43 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
     /**
      * @notice Construct an ERC721 token URI.
      */
-    function constructTokenURI(
-        string storage _daName,
-        string storage _description,
-        string storage _uberSVG
-    ) private {
+    function constructTokenURI() internal view returns (string memory) {
         // prettier-ignore
-        uberURI = string(
-            abi.encodePacked(
-                'data:application/json;base64,',
-                Base64.encode(
-                    bytes(
-                        abi.encodePacked('{"name":"', _daName, '", "description":"', _description, '", "image": "', 'data:image/svg+xml;base64,', _uberSVG, '"}')
+
+        SVGParams memory params = SVGParams({
+            parts: gunParts,
+            background: background
+        });
+
+        TokenURIParams memory tokenParams = TokenURIParams({
+            name: daName,
+            description: description,
+            parts: gunParts,
+            background: background
+        });
+
+        string memory _uberSVG = generateSVG(params, gunPalette);
+
+        return
+            string(
+                abi.encodePacked(
+                    "data:application/json;base64,",
+                    Base64.encode(
+                        bytes(
+                            abi.encodePacked(
+                                '{"name":"',
+                                tokenParams.name,
+                                '", "description":"',
+                                tokenParams.description,
+                                '", "image": "',
+                                "data:image/svg+xml;base64,",
+                                _uberSVG,
+                                '"}'
+                            )
+                        )
                     )
                 )
-            )
-        );
+            );
     }
 
     function currentPrice() public view returns (uint256) {
@@ -254,9 +279,11 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
 
         _tokenIds.increment();
 
+        constructTokenURI();
+
         uint256 id = _tokenIds.current();
         _mint(msg.sender, id);
-        _setTokenURI(id, uberURI);
+        _setTokenURI(id, constructTokenURI());
 
         emit Wtf(msg.sender, msg.value);
 
