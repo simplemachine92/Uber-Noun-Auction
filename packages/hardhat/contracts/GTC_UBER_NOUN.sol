@@ -47,7 +47,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Auction variables !! Change before deploy !!
      */
-    uint256 private startingPrice = .1 ether;
+    uint256 private startingPrice = .01 ether;
 
     uint256 private startAt = block.timestamp;
 
@@ -270,6 +270,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     function currentPrice() public view returns (uint256) {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(block.timestamp < mintDeadline, "auction expired, wtf");
 
         uint256 timeElapsed = block.timestamp - startAt;
         uint256 deduction = priceDeductionRate * timeElapsed;
@@ -278,8 +279,13 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         return price;
     }
 
-    function buy(address publicGoodsHero) private returns (uint256) {
+    function buy(address publicGoodsHero)
+        private
+        nonReentrant
+        returns (uint256)
+    {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(block.timestamp < mintDeadline, "auction expired, wtf");
 
         _tokenIds.increment();
 

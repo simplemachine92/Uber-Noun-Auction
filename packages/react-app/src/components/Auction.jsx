@@ -1,8 +1,13 @@
 import { utils, ethers } from "ethers";
 import { Row, Card, Col, Image, Button, Divider } from "antd";
-import React, { useState } from "react";
-import { Address, Balance, Events } from "../components";
-import { gray } from "chalk";
+import React, { useState, useEffect } from "react";
+import CeramicClient from "@ceramicnetwork/http-client";
+import { usePoller } from "eth-hooks";
+
+const API_URL = "https://ceramic-clay.3boxlabs.com";
+const ceramic = new CeramicClient(API_URL);
+
+const streamId = "kjzl6cwe1jw149ev0o0tt1txv9bck274btx01p4v3mc81a2opka6lwzozcdly2s";
 
 export default function AuctionCard({
   purpose,
@@ -31,16 +36,31 @@ export default function AuctionCard({
     background: "rgb(84,216,208,.8)",
   };
 
+  const [stream, setStream] = useState();
+  // prettier-ignore
+  usePoller(async () => {
+      var ourStream = await ceramic.loadStream(streamId);
+      setStream((ourStream.state$.state$.value.next.content.Foo))
+      console.log(stream)
+  }, 15000);
+
+  useEffect(async () => {
+    var ourStream = await ceramic.loadStream(streamId);
+    setStream(ourStream.state$.state$.value.next.content.Foo);
+    console.log(stream);
+  }, []);
+
   return (
-    <div className="App">
-      <Row gutter={8}>
-        <img className="logo_moonshot" src="ubernoun.png" />
-        <Col span={15}>
+    <div className="">
+      <Row gutter={6}>
+        <img className="logo_moonshot" src={stream} />
+        <Col span={14}>
           <h1>GTC UBER-NOUN</h1>
           <div style={{ paddingLeft: 20, paddingTop: 10, paddingRight: 20 }}>
             <Card style={cardStyle} title="😈 👹 1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN 👹 😈 " bordered={false}>
               <h4>DUTCH AUCTION STARTING AT Ξ9,999,999</h4>
               <h2>DECREASING BY Ξ16.534 / Second</h2>
+
               <Button
                 type="primary"
                 onClick={async () => {
