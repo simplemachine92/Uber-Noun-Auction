@@ -8,7 +8,7 @@ import {NFTDescriptor} from "../nouns_contracts/libs/NFTDescriptor.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract GTC_UBER_NOUN is ERC721URIStorage {
+contract GTC_UBER_NOUN is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
     using Strings for uint256;
@@ -226,7 +226,7 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
     function constructTokenURI() internal view returns (string memory) {
         // prettier-ignore
 
-        string memory _uberSVG = generateSVGImage();
+        string memory _uberSVG = Base64.encode(bytes(generateSVG()));
 
         return
             string(
@@ -254,13 +254,26 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
      * @notice Return b64 encoded SVG image for use in the ERC721 token URI.
      */
     // prettier-ignore
-    function generateSVGImage()
-        private
+    function tokenURI(uint256 id)
+        public
+        view
+        override
+        returns (string memory)
+    {
+        require(_exists(id), "not exist");
+        return constructTokenURI();
+    }
+
+    /**
+     * @notice Generate json with b64 encode.
+     */
+    /* function generateSVGImage(MultiPartRLEToSVG.SVGParams memory params, mapping(uint8 => string[]) storage palettes)
+        public
         view
         returns (string memory svg)
     {
-        return Base64.encode(bytes(generateSVG()));
-    }
+        return Base64.encode(bytes(MultiPartRLEToSVG.generateSVG(params, palettes)));
+    } */
 
     function currentPrice() public view returns (uint256) {
         uint256 timeElapsed = block.timestamp - startAt;
@@ -283,8 +296,8 @@ contract GTC_UBER_NOUN is ERC721URIStorage {
         _tokenIds.increment();
 
         uint256 id = _tokenIds.current();
+        //_setTokenURI(id, constructTokenURI(id));
         _mint(msg.sender, id);
-        _setTokenURI(id, constructTokenURI());
 
         emit Wtf(msg.sender, msg.value);
 
