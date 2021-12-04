@@ -40,13 +40,13 @@ export default function AuctionCard({
   // prettier-ignore
   usePoller(async () => {
       var ourStream = await ceramic.loadStream(streamId);
-      setStream((ourStream.state$.state$.value.next.content.Foo))
+      setStream((ourStream.state$.state$.value.content.Foo))
       console.log(stream)
   }, 15000);
 
   useEffect(async () => {
     var ourStream = await ceramic.loadStream(streamId);
-    setStream(ourStream.state$.state$.value.next.content.Foo);
+    setStream(ourStream.state$.state$.value.content.Foo);
     console.log(stream);
   }, []);
 
