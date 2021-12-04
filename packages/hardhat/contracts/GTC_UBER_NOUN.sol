@@ -1,23 +1,23 @@
 pragma solidity ^0.8.6;
 //SPDX-License-Identifier: MIT
 
-//import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import {Base64} from "base64-sol/base64.sol";
-import {NFTDescriptor} from "../nouns_contracts/libs/NFTDescriptor.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract GTC_UBER_NOUN is ERC721 {
+contract GTC_UBER_NOUN is ERC721, ReentrancyGuard {
+    using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    using Strings for uint256;
 
-    struct SVGParams {
-        bytes[] parts;
-        string background;
-    }
+    // Gitcoin multi-sig address, called on buy,
+    // 100% to Gitcoin for GR12
+    address payable public constant gitcoin =
+        payable(0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6);
 
+    // Structs from Noun gen process
     struct ContentBounds {
         uint8 top;
         uint8 right;
@@ -43,30 +43,29 @@ contract GTC_UBER_NOUN is ERC721 {
         string background;
     }
 
-    TokenURIParams[] private tParams;
-
-    address payable public constant gitcoin =
-        payable(0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6);
-
+    /**
+     * @notice Auction variables !! Change before deploy !!
+     */
     uint256 public startingPrice = .1 ether;
-    uint256 private constant limit = 1;
-    uint256 private constant priceDeductionRate = 0.0001 ether;
+
     uint256 public startAt = block.timestamp;
+
     uint256 public mintDeadline = block.timestamp + 7 days;
 
-    string public daName;
+    uint256 private constant limit = 1;
 
-    string public description;
+    uint256 private constant priceDeductionRate = 0.0001 ether;
 
-    string public background;
+    /**
+     * @notice Stores Noun data privately until auction concludes
+     */
+    TokenURIParams[] private tParams;
 
-    // They said gg but it was bg
-    string public daBackground;
+    bytes[] private gunParts;
 
-    bytes[] public gunParts;
+    string[] private gunPalette;
 
-    string[] public gunPalette;
-
+    // WTF?!?!?!?!
     event Wtf(address winner, uint256 amount);
 
     constructor(
@@ -79,27 +78,28 @@ contract GTC_UBER_NOUN is ERC721 {
         string memory _background,
         string[] memory _palette
     ) ERC721("GTC UBER-NOUN", "GUN") {
-        //R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
+        // R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
         gunParts.push(_gunBody);
         gunParts.push(_gunCessory);
         gunParts.push(_gunHead);
         gunParts.push(_gunGlasses);
-        daName = _name;
-        description = _description;
-        background = _background;
         gunPalette = _palette;
 
+        // ASSEMBLE THE G_U_N
         tParams.push(
             TokenURIParams({
-                name: daName,
-                description: description,
+                name: _name,
+                description: _description,
                 parts: gunParts,
-                background: background
+                background: _background
             })
         );
     }
 
-    function generateSVG() internal view returns (string memory) {
+    /**
+     * @notice Generate SVG using G_U_N params
+     */
+    function generateSVG() private view returns (string memory) {
         // prettier-ignore
 
         return string(
@@ -221,9 +221,9 @@ contract GTC_UBER_NOUN is ERC721 {
     }
 
     /**
-     * @notice Construct an ERC721 token URI.
+     * @notice Generate SVG, b64 encode it, construct an ERC721 token URI.
      */
-    function constructTokenURI() internal view returns (string memory) {
+    function constructTokenURI() private view returns (string memory) {
         // prettier-ignore
 
         string memory _uberSVG = Base64.encode(bytes(generateSVG()));
@@ -251,7 +251,7 @@ contract GTC_UBER_NOUN is ERC721 {
     }
 
     /**
-     * @notice Return b64 encoded SVG image for use in the ERC721 token URI.
+     * @notice Receives json from constructTokenURI, uri private until purchased.
      */
     // prettier-ignore
     function tokenURI(uint256 id)
@@ -264,17 +264,6 @@ contract GTC_UBER_NOUN is ERC721 {
         return constructTokenURI();
     }
 
-    /**
-     * @notice Generate json with b64 encode.
-     */
-    /* function generateSVGImage(MultiPartRLEToSVG.SVGParams memory params, mapping(uint8 => string[]) storage palettes)
-        public
-        view
-        returns (string memory svg)
-    {
-        return Base64.encode(bytes(MultiPartRLEToSVG.generateSVG(params, palettes)));
-    } */
-
     function currentPrice() public view returns (uint256) {
         uint256 timeElapsed = block.timestamp - startAt;
         uint256 deduction = priceDeductionRate * timeElapsed;
@@ -283,24 +272,27 @@ contract GTC_UBER_NOUN is ERC721 {
         return price;
     }
 
-    function buy() public payable returns (uint256) {
-        require(_tokenIds.current() < limit, "DONE MINTING BOTS");
+    function buy(address publicGoodsHero) private returns (uint256) {
+        require(_tokenIds.current() < limit, "Only one.. wtf?");
 
-        require(block.timestamp < mintDeadline, "auction expired");
+        _tokenIds.increment();
 
+        uint256 id = _tokenIds.current();
+        _mint(publicGoodsHero, id);
+
+        emit Wtf(publicGoodsHero, msg.value);
+
+        return id;
+    }
+
+    function requestBuy() external payable {
+        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(block.timestamp < mintDeadline, "auction expired, wtf");
         require(msg.value >= currentPrice(), "ETH < price");
 
         (bool success, ) = gitcoin.call{value: msg.value}("");
         require(success, "could not send");
 
-        _tokenIds.increment();
-
-        uint256 id = _tokenIds.current();
-        //_setTokenURI(id, constructTokenURI(id));
-        _mint(msg.sender, id);
-
-        emit Wtf(msg.sender, msg.value);
-
-        return id;
+        buy(msg.sender);
     }
 }

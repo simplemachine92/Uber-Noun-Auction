@@ -44,14 +44,15 @@ export default function AuctionCard({
               <Button
                 type="primary"
                 onClick={async () => {
-                  tx(writeContracts.GTC_UBER_NOUN.buy({ value: priceToMint }));
+                  tx(writeContracts.GTC_UBER_NOUN.requestBuy({ value: priceToMint }));
                 }}
               >
-                MINT for Ξ{priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}
+                ON-CHAIN MINT for Ξ{priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}
               </Button>
               <br />
               <h4>JUST PRESS THE BUTTON, ANON, AAAAAAHAHAHAAHAHHAA</h4>
               <h2>❤️ 100% Proceeds To Public Goods ❤️</h2>
+              <h2>❤️ and 100% On-Chain ❤️</h2>
               <h2>
                 Seriously, you can <a href="placeholder">read the contract</a>
               </h2>
