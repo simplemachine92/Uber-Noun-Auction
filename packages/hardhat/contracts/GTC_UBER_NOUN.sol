@@ -3,16 +3,17 @@ pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import {Base64} from "base64-sol/base64.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import {Base64} from "base64-sol/base64.sol";
 
-contract GTC_UBER_NOUN is ERC721, ReentrancyGuard {
+contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    // Gitcoin multi-sig address, called on buy,
+    // Gitcoin multi-sig address, called on buy
     // 100% to Gitcoin for GR12
     address payable public constant gitcoin =
         payable(0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6);
@@ -46,15 +47,18 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard {
     /**
      * @notice Auction variables !! Change before deploy !!
      */
-    uint256 public startingPrice = .1 ether;
+    uint256 private startingPrice = .1 ether;
 
-    uint256 public startAt = block.timestamp;
+    uint256 private startAt = block.timestamp;
 
-    uint256 public mintDeadline = block.timestamp + 7 days;
+    uint256 private mintDeadline = block.timestamp + 7 days;
 
     uint256 private constant limit = 1;
 
     uint256 private constant priceDeductionRate = 0.0001 ether;
+
+    // Set when the auction concludes
+    bool private publicGoodsFunded;
 
     /**
      * @notice Stores Noun data privately until auction concludes
@@ -251,7 +255,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard {
     }
 
     /**
-     * @notice Receives json from constructTokenURI, uri private until purchased.
+     * @notice Receives json from constructTokenURI
      */
     // prettier-ignore
     function tokenURI(uint256 id)
@@ -265,6 +269,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard {
     }
 
     function currentPrice() public view returns (uint256) {
+        require(_tokenIds.current() < limit, "Only one.. wtf?");
+
         uint256 timeElapsed = block.timestamp - startAt;
         uint256 deduction = priceDeductionRate * timeElapsed;
         uint256 price = startingPrice - deduction;
@@ -280,6 +286,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard {
         uint256 id = _tokenIds.current();
         _mint(publicGoodsHero, id);
 
+        publicGoodsFunded = true;
         emit Wtf(publicGoodsHero, msg.value);
 
         return id;
