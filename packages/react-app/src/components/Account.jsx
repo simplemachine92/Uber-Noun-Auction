@@ -64,7 +64,6 @@ export default function Account({
           ) : (
             "Connecting..."
           )}
-          <Balance address={address} provider={localProvider} price={price} />
           <Wallet
             address={address}
             provider={localProvider}
@@ -79,20 +78,17 @@ export default function Account({
         (web3Modal?.cachedProvider ? (
           <Button
             key="logoutbutton"
-            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
-            shape="round"
+            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20 }}
             size="large"
             onClick={logoutOfWeb3Modal}
           >
-            logout
+            DISCONNET WALLET
           </Button>
         ) : (
           <Button
             key="loginbutton"
-            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4 }}
-            shape="round"
+            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20 }}
             size="large"
-            /* type={minimized ? "default" : "primary"}     too many people just defaulting to MM and having a bad time */
             onClick={loadWeb3Modal}
           >
             connect
