@@ -3,12 +3,21 @@ const colors = require("tailwindcss/colors");
 module.exports = {
   purge: {
     content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-    options: {},
+    options: {
+      safelist: ["gift1", "gift2", "gift3"],
+    },
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      backgroundImage: {},
+      backgroundImage: {
+        gift1: "url('/src/assets/gift1.svg')",
+        gift2: "url('/src/assets/gift2.svg')",
+        gift3: "url('/src/assets/gift3.svg')",
+        gift31: "url('/src/assets/gift31.svg')",
+        gift32: "url('/src/assets/gift32.svg')",
+        scientistBg: "url('/src/assets/thescientist_bg.png')",
+      },
       colors: {
         orange: colors.orange,
         green: {
@@ -23,13 +32,18 @@ module.exports = {
           overlay: "#240871",
           imgText: "#8C65F7",
         },
+        blue: {
+          "ice-blue": "#54d8cf",
+          teal: "#2CAE92",
+          "dark-blue": "#1139C7",
+        },
         brown: {
           "dark-brown": "#262626",
         },
         gray: {
           "050": "#FFFFFF",
           1000: "#343a39",
-          noun: "C4C4C4",
+          noun: "#C4C4C4",
         },
         red: {
           bloodred: "#ea1e5047",
@@ -40,6 +54,7 @@ module.exports = {
     fontFamily: {
       spacemono: ["Space Mono"],
       librefranklin: ["Libre Franklin"],
+      comicneue: ["Comic-Neue"],
     },
     minHeight: {
       0: "0",

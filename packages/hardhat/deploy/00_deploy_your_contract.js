@@ -19,7 +19,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   let glasses =
     "0x000b171007030006030100060303000103020b010c020301000103020b010c02030403020b0103020c0203020b0103020c0403020b0103020c0203020b0103020c010302000103020b010c020301000103020b010c02030300060301000603";
   let name = "GTC UBER-NOUN";
-  let description = "replace later";
+  let description = "1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN";
   let palette = [
     "",
     "ffffff",

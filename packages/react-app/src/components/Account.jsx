@@ -1,6 +1,5 @@
 import { Button } from "antd";
 import React from "react";
-import { useThemeSwitcher } from "react-css-theme-switcher";
 import Address from "./Address";
 import Balance from "./Balance";
 import Wallet from "./Wallet";
@@ -50,9 +49,8 @@ export default function Account({
   loadWeb3Modal,
   logoutOfWeb3Modal,
   blockExplorer,
+  isWalletConnected,
 }) {
-  const { currentTheme } = useThemeSwitcher();
-
   return (
     <div>
       {minimized ? (
@@ -60,25 +58,30 @@ export default function Account({
       ) : (
         <span>
           {address ? (
-            <Address address={address} ensProvider={mainnetProvider} blockExplorer={blockExplorer} />
+            <Address
+              address={address}
+              ensProvider={mainnetProvider}
+              blockExplorer={blockExplorer}
+              isWalletConnected={isWalletConnected}
+            />
           ) : (
-            "Connecting..."
+            ""
           )}
-          <Wallet
+          {/* <Wallet
             address={address}
             provider={localProvider}
             signer={userSigner}
             ensProvider={mainnetProvider}
             price={price}
             color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
-          />
+          /> */}
         </span>
       )}
       {web3Modal &&
         (web3Modal?.cachedProvider ? (
           <Button
             key="logoutbutton"
-            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20 }}
+            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20, color: "black" }}
             size="large"
             onClick={logoutOfWeb3Modal}
           >
@@ -87,11 +90,11 @@ export default function Account({
         ) : (
           <Button
             key="loginbutton"
-            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20 }}
+            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20, color: "black" }}
             size="large"
             onClick={loadWeb3Modal}
           >
-            connect
+            connect wallet
           </Button>
         ))}
     </div>

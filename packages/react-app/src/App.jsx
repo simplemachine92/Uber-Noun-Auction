@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Menu, Row } from "antd";
+import { Col, Row } from "antd";
 import "antd/dist/antd.css";
 import {
   useBalance,
@@ -12,15 +12,17 @@ import { useExchangeEthPrice } from "eth-hooks/dapps/dex";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
 import "./App.css";
-import { Account, Contract, Faucet, GasGauge, Header, Ramp, NetworkDisplay, FaucetHint } from "./components";
+import { Account, Contract, Faucet, GasGauge, Header, Ramp, NetworkDisplay, FaucetHint, Nav } from "./components";
 import { NETWORKS, ALCHEMY_KEY } from "./constants";
 import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
-import { Transactor, Web3ModalSetup } from "./helpers";
+import { Transactor, Web3ModalSetup, Address as AddressHelper } from "./helpers";
 import { Home, ExampleUI, Subgraph } from "./views";
 import { useStaticJsonRPC } from "./hooks";
 import { Color } from "chalk";
+import useWindowSize from "react-use/lib/useWindowSize";
+import Confetti from "react-confetti";
 
 const { ethers } = require("ethers");
 /*
@@ -66,10 +68,14 @@ function App(props) {
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
   const [selectedNetwork, setSelectedNetwork] = useState(networkOptions[0]);
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
+
+  const { width, height } = useWindowSize();
+
   const location = useLocation();
 
   /// 📡 What chain are your contracts deployed to?
-  const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+  const targetNetwork = NETWORKS.mumbai; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
   // 🔭 block explorer URL
   const blockExplorer = targetNetwork.blockExplorer;
@@ -193,6 +199,9 @@ function App(props) {
       console.log("💵 yourMainnetDAIBalance", myMainnetDAIBalance);
       console.log("🔐 writeContracts", writeContracts);
     }
+    if (readContracts) {
+      setIsWalletConnected(AddressHelper.isValidAddress(address));
+    }
   }, [
     mainnetProvider,
     address,
@@ -234,29 +243,41 @@ function App(props) {
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
   return (
-    <div className="App">
-      {/* ✏️ Edit the header and change the title to your project name */}
-      <Header />
-      <NetworkDisplay
-        NETWORKCHECK={NETWORKCHECK}
-        localChainId={localChainId}
-        selectedChainId={selectedChainId}
-        targetNetwork={targetNetwork}
+    <div className="App bg-scientistBg min-w-full">
+      <Confetti
+        width={width}
+        height={height}
+        colors={["#FFFFFF"]}
+        drawShape={ctx => {
+          ctx.beginPath();
+          ctx.fillRect(10, 10, 10, 10);
+          ctx.closePath();
+        }}
       />
-      {/* <Menu style={{ textAlign: "center" }} selectedKeys={[location.pathname]} mode="horizontal">
-        <Menu.Item key="/">
-          <Link to="/">Auction</Link>
-        </Menu.Item>
-        <Menu.Item key="/">
-          <Link to="/">About</Link>
-        </Menu.Item>
-        <Menu.Item key="/debug">
-          <Link to="/debug">Debug Contracts</Link>
-        </Menu.Item>
-        <Menu.Item key="/exampleui">
-          <Link to="/exampleui">ExampleUI</Link>
-        </Menu.Item>
-      </Menu> */}
+      {/* ✏️ Edit the header and change the title to your project name */}
+      <Nav
+        address={address}
+        localProvider={localProvider}
+        userSigner={userSigner}
+        mainnetProvider={mainnetProvider}
+        price={price}
+        web3Modal={web3Modal}
+        loadWeb3Modal={loadWeb3Modal}
+        logoutOfWeb3Modal={logoutOfWeb3Modal}
+        blockExplorer={blockExplorer}
+        networkDisplay={
+          <NetworkDisplay
+            NETWORKCHECK={NETWORKCHECK}
+            localChainId={localChainId}
+            selectedChainId={selectedChainId}
+            targetNetwork={targetNetwork}
+          />
+        }
+        faucetHint={
+          faucetAvailable ? <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider} /> : ""
+        }
+        isWalletConnected={isWalletConnected}
+      />
 
       <Switch>
         <Route exact path="/">
@@ -264,12 +285,6 @@ function App(props) {
           <Home writeContracts={writeContracts} readContracts={readContracts} priceToMint={priceToMint} tx={tx} />
         </Route>
         <Route exact path="/debug">
-          {/*
-                🎛 this scaffolding is full of commonly used components
-                this <Contract/> component will automatically parse your ABI
-                and give you a form to interact with it locally
-            */}
-
           <Contract
             name="GTC_UBER_NOUN"
             price={price}
@@ -306,7 +321,7 @@ function App(props) {
       </Switch>
 
       {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
-      <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
+      {/* <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
         <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
           <div style={{ marginRight: 20 }}></div>
           <Account
@@ -321,31 +336,17 @@ function App(props) {
             blockExplorer={blockExplorer}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
       <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
         <Row align="middle" gutter={[4, 4]}>
-          <Col span={8}>
+          <Col span={12}>
             <Ramp price={price} address={address} networks={NETWORKS} />
           </Col>
 
-          <Col span={8} style={{ textAlign: "center", opacity: 0.8 }}>
+          <Col span={12} style={{ textAlign: "center", opacity: 0.8 }}>
             <GasGauge gasPrice={gasPrice} />
-          </Col>
-          <Col span={8} style={{ textAlign: "center", opacity: 1 }}>
-            <Button
-              onClick={() => {
-                window.open("https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA");
-              }}
-              size="large"
-              shape="round"
-            >
-              <span style={{ marginRight: 8 }} role="img" aria-label="support">
-                💬
-              </span>
-              Support
-            </Button>
           </Col>
         </Row>
 

@@ -6,7 +6,7 @@ import React from "react";
 export default function Header() {
   return (
     <a href="https://github.com/austintgriffith/scaffold-eth" target="_blank" rel="noopener noreferrer">
-      <PageHeader title="A Very Nounish Gitcoinmas" subTitle="Made w/ scaffold-eth" style={{ cursor: "pointer" }} />
+      <PageHeader title={<img className="logo_moonshot" src="cornerLogo.svg" />} style={{ cursor: "pointer" }} />
     </a>
   );
 }
