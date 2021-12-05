@@ -1,9 +1,14 @@
 import { utils, ethers } from "ethers";
 import { Row, Card, Col, Image, Button, Divider } from "antd";
-import React, { useState } from "react";
-import { Address, Balance, Events } from "../../components";
-import { gray } from "chalk";
+import React, { useState, useEffect } from "react";
 import "./Auction.css";
+import CeramicClient from "@ceramicnetwork/http-client";
+import { usePoller } from "eth-hooks";
+
+const API_URL = "https://ceramic-clay.3boxlabs.com";
+const ceramic = new CeramicClient(API_URL);
+
+const streamId = "kjzl6cwe1jw149ev0o0tt1txv9bck274btx01p4v3mc81a2opka6lwzozcdly2s";
 
 export default function Auction({
   purpose,
@@ -17,13 +22,25 @@ export default function Auction({
   writeContracts,
   priceToMint,
 }) {
+  const [stream, setStream] = useState();
+  // prettier-ignore
+  usePoller(async () => {
+      var ourStream = await ceramic.loadStream(streamId);
+      setStream(ourStream.state$.state$.value.content.Foo);
+  }, 15000);
+
+  useEffect(async () => {
+    var ourStream = await ceramic.loadStream(streamId);
+    setStream(ourStream.state$.state$.value.content.Foo);
+  }, []);
+
   return (
     <section class="text-gray-600 body-font overflow-hidden">
       <div class="container px-5 mx-auto">
         <div class="flex flex-wrap">
           <div class="w-1/3 h-64 object-cover object-center rounded">
             <div className="h-56"></div>
-            <img className="logo_moonshot" src="ubernoun.png" />
+            <img className="logo_moonshot" src={stream} />
           </div>
           <div class="w-2/3 lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <div className="bg-gift1 h-56 bg-no-repeat bg-cover container relative">
