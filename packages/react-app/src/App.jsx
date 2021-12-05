@@ -244,7 +244,7 @@ function App(props) {
 
   return (
     <div className="App bg-scientistBg min-w-full">
-      <Confetti
+      {/* <Confetti
         width={width}
         height={height}
         colors={["#FFFFFF"]}
@@ -253,7 +253,7 @@ function App(props) {
           ctx.fillRect(10, 20, 10, 10);
           ctx.closePath();
         }}
-      />
+      /> */}
       {/* ✏️ Edit the header and change the title to your project name */}
       <Nav
         address={address}
