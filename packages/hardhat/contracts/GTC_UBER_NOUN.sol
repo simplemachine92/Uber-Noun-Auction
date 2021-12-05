@@ -278,6 +278,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     /// @param publicGoodsHero the address of the user to mint to
     function buy(address publicGoodsHero)
         private
+        nonReentrant
         returns (uint256)
     {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
@@ -298,7 +299,6 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     function requestBuy()
         external
         payable
-        nonReentrant
     {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
