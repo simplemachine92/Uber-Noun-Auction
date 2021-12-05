@@ -1,15 +1,23 @@
-import React from "react";
-import { Col, Dropdown, Row, Menu, Button } from "antd";
+import React, { useState } from "react";
+import { Col, Row, Button } from "antd";
 import { Link } from "react-router-dom";
+import { useInterval } from "../hooks";
 import Account from "./Account";
-import { MenuOutlined } from "@ant-design/icons";
 
 export default function Nav(props) {
+  const [blink, setBlink] = useState();
+  useInterval(() => {
+    setBlink(!blink);
+  }, 1000);
   return (
     <Row className="p-10">
       <Col span={8}>
         <Link to="/">
-          <img src="logoGiph.gif" alt="Top Logo" className="h-32" />
+          {blink ? (
+            <img src="cornerLogo2.svg" alt="Top Logo" className="h-32" />
+          ) : (
+            <img src="cornerLogo.svg" alt="Top Logo" className="h-32" />
+          )}
         </Link>
       </Col>
       <Col span={8}>
