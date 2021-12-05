@@ -1,5 +1,39 @@
+@import url("https://fonts.googleapis.com/css?family=Space+Mono:400,700|Libre+Franklin:400,600|Miriam+Libre:400|Chivo:400");
+
 .teal-button {
 	background-color: #2CAE92;
 	border: 5px solid #b44878;
 	margin-bottom: 10px;
+}
+
+.top-sign {
+	font-family: "Avenir Next", sans-serif;
+	font-weight: 900;
+	font-size: 60px;
+	text-transform: uppercase;
+	font-style: italic;
+	letter-spacing: 0.05em;
+	display: inline-block;
+	margin-bottom: -20px;
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+  }
+
+  .top-sign-border {
+    background: linear-gradient(90deg, rgb(250, 0, 0) 50%, transparent 50%), 
+                linear-gradient(90deg, rgb(29, 112, 18) 50%, transparent 50%), 
+                linear-gradient(0deg, rgb(25, 107, 32) 50%, transparent 50%), 
+                linear-gradient(0deg, rgb(247, 16, 0) 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 16px 4px, 16px 4px, 4px 16px, 4px 16px;
+    background-position: 0% 0%, 100% 100%, 0% 100%, 100% 0px;
+    border-radius: 5px;
+    animation: dash 5s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        background-position: 100% 0%, 0% 100%, 0% 0%, 100% 100%;
+    }
 }
