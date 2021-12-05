@@ -36,6 +36,7 @@ export default function Nav(props) {
               color: "black",
               onHover: "#2B891C",
             }}
+            href="https://nouns.wtf/vote/21"
           >
             nouns
           </Button>

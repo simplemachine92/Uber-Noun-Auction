@@ -1,6 +1,31 @@
 pragma solidity ^0.8.6;
 //SPDX-License-Identifier: MIT
 
+/*********************************
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
+ * ░░░░░░██░░░████░░██░░░████░░░ *
+ * ░░██████░░░████████░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ *********************************/
+/* IN COLLABORATION WITH */
+
+/*
+  ____  _  _                 _        
+ / ___|(_)| |_   ___   ___  (_) _ __  
+| |  _ | || __| / __| / _ \ | || '_ \ 
+| |_| || || |_ | (__ | (_) || || | | |
+ \____||_| \__| \___| \___/ |_||_| |_|
+ 
+   Made by NoWonder
+   https://twitter.com/nowonderer
+ */
+
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
