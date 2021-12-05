@@ -27,6 +27,7 @@ module.exports = {
           header: "#6AC59F",
           "light-green": "#E2F3EC",
           imgBg: "#9ED5AA",
+          xmas: "#2B891C",
         },
         purple: {
           overlay: "#240871",
@@ -48,6 +49,7 @@ module.exports = {
         red: {
           bloodred: "#ea1e5047",
           soldout: "#EB1E50",
+          xmas: "#FF0202",
         },
       },
     },
