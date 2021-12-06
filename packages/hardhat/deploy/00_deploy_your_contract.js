@@ -32,16 +32,15 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     "00d6ca",
   ];
 
+  let parts = [body, accessory, head, glasses];
+
   let background = "b294ed";
 
   await deploy("GTC_UBER_NOUN", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // prettier-ignore
-    args: [body,
-    accessory,
-    head,
-    glasses,
+    args: [parts,
     name,
     description,
     background,

@@ -100,20 +100,14 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     event Wtf(address winner, uint256 amount);
 
     constructor(
-        bytes memory _gunBody,
-        bytes memory _gunCessory,
-        bytes memory _gunHead,
-        bytes memory _gunGlasses,
+        bytes[] memory _gunParts,
         string memory _name,
         string memory _description,
         string memory _background,
         string[] memory _palette
     ) ERC721("GTC UBER-NOUN", "GUN") {
         // R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
-        gunParts.push(_gunBody);
-        gunParts.push(_gunCessory);
-        gunParts.push(_gunHead);
-        gunParts.push(_gunGlasses);
+        gunParts = _gunParts;
         gunPalette = _palette;
 
         // ASSEMBLE THE G_U_N
@@ -291,6 +285,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         override
         returns (string memory)
     {
+        require(id <= limit, "non-existant");
         require(_exists(id), "not exist");
         return constructTokenURI();
     }
