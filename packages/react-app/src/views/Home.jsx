@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Button, Alert, Input, List, Card } from "antd";
 import { Link } from "react-router-dom";
 import { useContractReader } from "eth-hooks";
-import { AuctionCard } from "../components";
+import { Auction, Footer, Faq } from "../components";
 import { ethers } from "ethers";
 
 /**
@@ -15,7 +15,17 @@ function Home({ writeContracts, readContracts, priceToMint, tx }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
   return (
-    <AuctionCard writeContracts={writeContracts} readContracts={readContracts} priceToMint={priceToMint} tx={tx} />
+    <div>
+      <Auction writeContracts={writeContracts} readContracts={readContracts} priceToMint={priceToMint} tx={tx} />
+      <div className="bg-white">
+        <Row>
+          <Col span={12} offset={6}>
+            <Faq />
+          </Col>
+        </Row>
+        <Footer />
+      </div>
+    </div>
   );
 }
 
