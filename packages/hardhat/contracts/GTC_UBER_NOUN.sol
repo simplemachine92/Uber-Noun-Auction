@@ -8,13 +8,16 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import {Base64} from "base64-sol/base64.sol";
 
+/// @title GTC UBER NOUN NFT Contract
+/// @author nowonderer
+/// @notice mints svg wtf nfs
+/// @dev mints nfts
 contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    // Gitcoin multi-sig address, called on buy
-    // 100% to Gitcoin for GR12
+    /// @notice Gitcoin multi-sig address, called on buy 100% to Gitcoin for GR12
     address payable public constant gitcoin =
         payable(0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6);
 
@@ -44,9 +47,9 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         string background;
     }
 
-    /**
+    /*******************************************************
      * @notice Auction variables !! Change before deploy !!
-     */
+     *******************************************************/
     uint256 private startingPrice = .01 ether;
 
     uint256 private startAt = block.timestamp;
@@ -57,12 +60,10 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     uint256 private constant priceDeductionRate = 0.0001 ether;
 
-    // Set when the auction concludes
+    /// @dev Set when the auction concludes
     bool private publicGoodsFunded;
 
-    /**
-     * @notice Stores Noun data privately until auction concludes
-     */
+    /// @dev Stores Noun data privately until auction concludes
     TokenURIParams[] private tParams;
 
     bytes[] private gunParts;
@@ -100,9 +101,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         );
     }
 
-    /**
-     * @notice Generate SVG using G_U_N params
-     */
+    /// @dev Generate SVG using G_U_N params
     function generateSVG() private view returns (string memory) {
         // prettier-ignore
 
@@ -116,9 +115,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         );
     }
 
-    /**
-     * @notice Given RLE image parts and color palettes, generate SVG rects.
-     */
+    /// @dev Given RLE image parts and color palettes, generate SVG rects.
     // prettier-ignore
     function _generateSVGRects()
         private
@@ -174,9 +171,9 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         return rects;
     }
 
-    /**
-     * @notice Return a string that consists of all rects in the provided `buffer`.
-     */
+    /// @notice Return a string that consists of all rects in the provided `buffer`.
+    /// @param cursor the cursor position
+    /// @param buffer the buffer bytes string
     // prettier-ignore
     function _getChunk(uint256 cursor, string[16] memory buffer) private pure returns (string memory) {
         string memory chunk;
@@ -191,9 +188,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         return chunk;
     }
 
-    /**
-     * @notice Decode a single RLE compressed image into a `DecodedImage`.
-     */
+    /// @dev Decode a single RLE compressed image into a `DecodedImage`.
+    /// @param image the bytes for the image
     function _decodeRLEImage(bytes memory image)
         private
         pure
@@ -224,9 +220,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
             });
     }
 
-    /**
-     * @notice Generate SVG, b64 encode it, construct an ERC721 token URI.
-     */
+
+    /// @dev Generate SVG, b64 encode it, construct an ERC721 token URI.
     function constructTokenURI() private view returns (string memory) {
         // prettier-ignore
 
@@ -254,10 +249,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
             );
     }
 
-    /**
-     * @notice Receives json from constructTokenURI
-     */
-    // prettier-ignore
+    /// @dev Receives json from constructTokenURI
+    /// @param id the token id
     function tokenURI(uint256 id)
         public
         view
@@ -268,6 +261,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         return constructTokenURI();
     }
 
+
+    /// @dev a view to return the current price of the nft
     function currentPrice() public view returns (uint256) {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
@@ -279,6 +274,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         return price;
     }
 
+    /// @dev internal buy function to mint nft
+    /// @param publicGoodsHero the address of the user to mint to
     function buy(address publicGoodsHero)
         private
         nonReentrant
@@ -298,7 +295,11 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         return id;
     }
 
-    function requestBuy() external payable {
+    /// @dev public request buy function for minting
+    function requestBuy()
+        external
+        payable
+    {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
         require(msg.value >= currentPrice(), "ETH < price");
