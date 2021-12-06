@@ -92,6 +92,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     bytes[] private gunParts;
 
+    //bytes[] public revealedParts;
+
     string[] private gunPalette;
 
     // WTF?!?!?!?!
@@ -291,6 +293,11 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     {
         require(_exists(id), "not exist");
         return constructTokenURI();
+    }
+
+    function contractURI() public view returns (string memory) {
+        return
+            "https://ipfs.io/ipfs/QmWiUHnQ6LrgbrktsGFjoNv2vLH5ae62frECo9JR7DAzRA";
     }
 
     function currentPrice() public view returns (uint256) {

@@ -44,11 +44,7 @@ export default function Auction({
           </div>
           <div class="w-2/3 lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <div className="bg-gift1 h-56 bg-no-repeat bg-cover container relative">
-              <br />
-              <br />
-              <br />
               <h1>😈 👹 1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN 👹 😈</h1>
-              <br />
               <div className="top-sign top-sign-border bottom-0">
                 <span className="text-red-xmas font-bold">GTC</span>{" "}
                 <span className="text-green-xmas font-bold">UBER</span>
@@ -68,10 +64,7 @@ export default function Auction({
               <h1 className="mx-auto text-xl p-6 border-8 border-black bg-blue-teal">
                 DUTCH AUCTION STARTING AT Ξ9,999,999
               </h1>
-              <h1 className="mx-auto text-xl p-6 border-8 border-black bg-blue-teal">
-                <br />
-                DECREASING BY Ξ16.534 / Second
-              </h1>
+              <h1 className="mx-auto text-xl p-6 border-8 border-black bg-blue-teal">DECREASING BY Ξ16.534 / Second</h1>
             </div>
             <div className="h-20 bg-blue-dark-blue border-8 border-black"></div>
             <div className="h-56 bg-blue-dark-blue border-8 border-black p-10">

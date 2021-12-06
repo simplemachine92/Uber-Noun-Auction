@@ -12,12 +12,14 @@ const Faq = () => {
         <Collapse style={{ border: 0 }}>
           <Panel
             style={{ color: "black", background: "black" }}
-            header="ROADMAP"
+            header="What the heck is this?"
             key="ROADMAP_1"
             extra={<PlusOutlined style={{ color: "black" }} />}
             showArrow={false}
           >
-            Test
+            This is a collaborative experiment between Gitcoin and NounsDAO. If you would like more information
+            <br />
+            <a href="https://nouns.wtf/vote/21">Click Here</a>
           </Panel>
           <Panel
             style={{ color: "black", background: "black" }}
@@ -26,7 +28,13 @@ const Faq = () => {
             extra={<PlusOutlined style={{ color: "black" }} />}
             showArrow={false}
           >
-            Test
+            Authors:
+            <br />
+            Contract / Auction / Concept: <a href="https://twitter.com/nowonderer">NoWonder</a>
+            <br />
+            Proposal:<a href="https://twitter.com/noun12LFG">Noun12</a>
+            <br />
+            Uber-Noun Artwork: <a href="https://gitcoin.co/thecydonian">thecydonian</a>
           </Panel>
         </Collapse>
       </div>
