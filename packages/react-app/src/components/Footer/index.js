@@ -29,11 +29,11 @@ const Footer = () => {
           >
             <span className="ml-3 text-xl">built w/ Scaffold-Eth</span>
           </a>
-          <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start text-lg">
+          {/* <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start text-lg">
             <a className="text-gray-500 underline hover:text-blue-900">telegram</a>
             <a className="ml-6 text-gray-500 underline hover:text-blue-500">twitter</a>
             <a className="ml-6 text-gray-500 underline hover:text-indigo-500">discord</a>
-          </span>
+          </span> */}
         </div>
       </div>
     </footer>

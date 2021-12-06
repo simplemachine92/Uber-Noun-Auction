@@ -18,6 +18,7 @@ module.exports = {
         gift31: "url('/src/assets/gift31.svg')",
         gift32: "url('/src/assets/gift32.svg')",
         scientistBg: "url('/src/assets/thescientist_bg.png')",
+        solarpunkBg: "url('/src/assets/solarpunk_bg.png')",
       },
       colors: {
         orange: colors.orange,

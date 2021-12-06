@@ -1,34 +1,26 @@
 import React from "react";
-import { Collapse } from "antd";
-const { Panel } = Collapse;
-import { PlusOutlined } from "@ant-design/icons";
 import "./Faq.css";
 
 const Faq = () => {
   return (
     <div className="flex-wrapper">
       <div className="p-10">
-        <h1 className="text-black">Faq</h1>
-        <Collapse style={{ border: 0 }}>
-          <Panel
-            style={{ color: "black", background: "black" }}
-            header="ROADMAP"
-            key="ROADMAP_1"
-            extra={<PlusOutlined style={{ color: "black" }} />}
-            showArrow={false}
-          >
-            Test
-          </Panel>
-          <Panel
-            style={{ color: "black", background: "black" }}
-            header="ABOUT US"
-            key="ABOUTUS"
-            extra={<PlusOutlined style={{ color: "black" }} />}
-            showArrow={false}
-          >
-            Test
-          </Panel>
-        </Collapse>
+        <h1 className="text-black text-4xl font-bold">Nouns DAO and Gitcoin: A Public Goods and NFT Crossover Event</h1>
+        <br />
+        <br />
+        <ul className="text-left text-3xl space-y-10">
+          <li>
+            <a href="https://nouns.wtf/vote/21">How it Started</a>
+          </li>
+          <li>
+            <a href="https://twitter.com/noun12LFG/status/1466225951549894659">The Talk on Social</a>
+          </li>
+          <li>
+            <a href="https://medium.com/@noun12/nouns-dao-and-gitcoin-a-public-goods-and-nft-crossover-event-37bf12e12dff">
+              The Medium Article
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   );

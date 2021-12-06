@@ -54,57 +54,36 @@ export default function Account({
   return (
     <div class="container mx-auto flex flex-wrap flex-col sm:flex-row">
       <span class="inline-flex sm:ml-auto sm:mt-0 justify-center sm:justify-start">
-        <a class="text-gray-500">
-          {isWalletConnected ? <div className="rounded-full bg-green-500 w-5 h-5 mt-5"></div> : ""}
-        </a>
-        <a class="ml-3 text-gray-500">
-          {address ? (
+        {address ? (
+          <div className="flex flex-wrap flex-row">
+            <a class="text-gray-500">
+              {isWalletConnected ? (
+                <div className="rounded-full bg-green-500 w-5 h-5"></div>
+              ) : (
+                <div className="rounded-full bg-red-500 w-5 h-5"></div>
+              )}
+            </a>
             <Address
               address={address}
               ensProvider={mainnetProvider}
               blockExplorer={blockExplorer}
               isWalletConnected={isWalletConnected}
             />
+          </div>
+        ) : (
+          ""
+        )}
+
+        {web3Modal &&
+          (web3Modal?.cachedProvider ? (
+            <a class="ml-6 hover:text-gray-900" onClick={logoutOfWeb3Modal}>
+              disconnet
+            </a>
           ) : (
-            ""
-          )}
-        </a>
-        <a class="ml-3 text-gray-500">
-          {web3Modal &&
-            (web3Modal?.cachedProvider ? (
-              <Button
-                key="logoutbutton"
-                style={{
-                  verticalAlign: "top",
-                  marginLeft: 8,
-                  marginTop: 4,
-                  border: 0,
-                  fontSize: 20,
-                  color: "black",
-                }}
-                size="large"
-                onClick={logoutOfWeb3Modal}
-              >
-                disconnet
-              </Button>
-            ) : (
-              <Button
-                key="loginbutton"
-                style={{
-                  verticalAlign: "top",
-                  marginLeft: 8,
-                  marginTop: 4,
-                  border: 0,
-                  fontSize: 20,
-                  color: "black",
-                }}
-                size="large"
-                onClick={loadWeb3Modal}
-              >
-                connect wallet
-              </Button>
-            ))}
-        </a>
+            <a class="ml-6 hover:text-gray-900" onClick={loadWeb3Modal}>
+              connect wallet
+            </a>
+          ))}
       </span>
     </div>
   );
