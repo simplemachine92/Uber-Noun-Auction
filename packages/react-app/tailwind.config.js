@@ -4,7 +4,7 @@ module.exports = {
   purge: {
     content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
     options: {
-      safelist: ["gift1", "gift2", "gift3"],
+      safelist: ["gift1", "gift1Top", "gift2", "gift3"],
     },
   },
   darkMode: false, // or 'media' or 'class'
@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         gift1: "url('/src/assets/gift1.svg')",
+        gift1Top: "url('/src/assets/gift1Top.svg')",
         gift2: "url('/src/assets/gift2.svg')",
         gift3: "url('/src/assets/gift3.svg')",
         gift31: "url('/src/assets/gift31.svg')",
@@ -50,6 +51,9 @@ module.exports = {
           bloodred: "#ea1e5047",
           soldout: "#EB1E50",
           xmas: "#FF0202",
+        },
+        yellow: {
+          gift: "#FFC702",
         },
       },
     },

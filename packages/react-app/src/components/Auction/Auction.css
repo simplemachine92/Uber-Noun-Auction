@@ -6,10 +6,34 @@
 	margin-bottom: 10px;
 }
 
+.first-gift {
+	background-color: #FFC702;
+	border: 15px solid black;
+	align-self: center;
+}
+
+.third-gift {
+	background-color: #2CAE92;
+	border: 15px solid black;
+	align-self: center;
+}
+
+.noun-img {
+	image-rendering: pixelated;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: crisp-edges;
+	padding-top: 10px;
+	padding-left: 20px;
+	width: 420px;
+	height: 420px;
+	margin-left: 10px;
+	flex-direction: row;
+	margin-bottom: 0;
+  }
+
 .top-sign {
 	font-family: "Avenir Next", sans-serif;
 	font-weight: 900;
-	font-size: 60px;
 	text-transform: uppercase;
 	font-style: italic;
 	letter-spacing: 0.05em;
@@ -37,3 +61,16 @@
         background-position: 100% 0%, 0% 100%, 0% 0%, 100% 100%;
     }
 }
+
+.ant-btn-primary {
+	background-color: #fa72af;
+	border: 5px solid #b44878;
+	font-size: 30px;
+	height: 64px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+  }
+  .ant-btn-primary:hover {
+	background-color: #b44878;
+	border: 7px solid #b44878;
+  }

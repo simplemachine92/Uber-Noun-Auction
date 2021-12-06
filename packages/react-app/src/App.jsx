@@ -19,7 +19,6 @@ import deployedContracts from "./contracts/hardhat_contracts.json";
 import { Transactor, Web3ModalSetup, Address as AddressHelper } from "./helpers";
 import { Home, ExampleUI, Subgraph } from "./views";
 import { useStaticJsonRPC, useUserSigner } from "./hooks";
-import { Color } from "chalk";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 
@@ -242,7 +241,7 @@ function App(props) {
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
   return (
-    <div className="App bg-scientistBg min-w-full">
+    <div className="bg-scientistBg w-full">
       <Confetti
         width={width}
         height={height}
