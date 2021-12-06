@@ -78,7 +78,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     uint256 private mintDeadline = block.timestamp + 7 days;
 
-    uint256 private constant limit = 2;
+    uint256 private constant limit = 5;
 
     uint256 private constant priceDeductionRate = 0.0001 ether;
 
@@ -90,12 +90,6 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
      */
     TokenURIParams[] private tParams;
 
-    bytes[] private gunParts;
-
-    //bytes[] public revealedParts;
-
-    string[] private gunPalette;
-
     mapping(uint256 => string[]) private palettes;
 
     // WTF?!?!?!?!
@@ -103,53 +97,84 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     constructor(
         bytes[] memory _gunParts,
-        string memory _name,
-        string memory _description,
+        bytes[] memory _devParts,
+        bytes[] memory _pParts,
         string memory _background,
-        string[] memory _palette
+        string memory _dBackground,
+        string memory _pBackground,
+        string[] memory _palette,
+        string[] memory _palette1,
+        string[] memory _palette2,
+        string[] memory _palette3,
+        string[] memory _palette4
     ) ERC721("GTC UBER-NOUN", "GUN") {
         // R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
-        gunParts = _gunParts;
-        gunPalette = _palette;
         palettes[0] = _palette;
-
+        palettes[1] = _palette1;
+        palettes[2] = _palette2;
+        palettes[3] = _palette3;
+        palettes[4] = _palette4;
+        transferOwnership(0xA5bBA108F72249c6dBF8AfBd595df359b594AE8c);
         // ASSEMBLE THE G_U_N
+
         tParams.push(
             TokenURIParams({
-                name: _name,
-                description: _description,
-                parts: gunParts,
+                name: "GTC UBER-NOUN",
+                description: "1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN",
+                parts: _gunParts,
                 background: _background
+            })
+        );
+
+        tParams.push(
+            TokenURIParams({
+                name: "GTC DEV NOUN",
+                description: "Punch the keys!",
+                parts: _devParts,
+                background: _dBackground
+            })
+        );
+
+        tParams.push(
+            TokenURIParams({
+                name: "GTC SOLAR NOUN",
+                description: "Solarpunk AF!",
+                parts: _pParts,
+                background: _pBackground
             })
         );
     }
 
-    /**
-     * @notice Add colors to a color palette.
-     * @dev This function can only be called by the owner.
-     */
-    /* function addManyColorsToPalette(
-        uint8 paletteIndex,
-        string[] calldata newColors
+    // Can't forget the Scientist & the Advocate (they don't fit in constructor)
+    function addToken(
+        string calldata iname,
+        string calldata idescription,
+        bytes[] calldata iparts,
+        string calldata ibackground
     ) external onlyOwner {
-        require(
-            palettes[paletteIndex].length + newColors.length <= 256,
-            "Palettes can only hold 256 colors"
-        );
-        for (uint256 i = 0; i < newColors.length; i++) {
-            _addColorToPalette(paletteIndex, newColors[i]);
-        }
-    } */
+        require(_tokenIds.current() >= 1, "Only after auction");
+        require(_tokenIds.current() <= 5, "Only 5, ever");
 
-    /**
-     * @notice Add a single color to a color palette.
-     */
-    /* function _addColorToPalette(uint8 _paletteIndex, string calldata _color)
-        internal
-    {
-        palettes[_paletteIndex].push(_color);
+        tParams.push(
+            TokenURIParams({
+                name: iname,
+                description: idescription,
+                parts: iparts,
+                background: ibackground
+            })
+        );
     }
- */
+
+    function mintRemaining() external onlyOwner {
+        require(_tokenIds.current() >= 1, "Only after auction");
+        require(_tokenIds.current() < 5, "Only 5, ever");
+
+        _tokenIds.increment();
+
+        uint256 id = _tokenIds.current();
+        _safeMint(msg.sender, id);
+    }
+
     /**
      * @notice Generate SVG using G_U_N params
      */
@@ -331,11 +356,11 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     function contractURI() public view returns (string memory) {
         return
-            "https://ipfs.io/ipfs/QmWiUHnQ6LrgbrktsGFjoNv2vLH5ae62frECo9JR7DAzRA";
+            "https://ipfs.io/ipfs/QmWVbRkXypQyjsQNzpYXaJ4pQitv757Hj7Yqk4vGfL4rbY";
     }
 
     function currentPrice() public view returns (uint256) {
-        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() < 1, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
 
         uint256 timeElapsed = block.timestamp - startAt;
@@ -350,13 +375,13 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         nonReentrant
         returns (uint256)
     {
-        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() < 1, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
 
         _tokenIds.increment();
 
         uint256 id = _tokenIds.current();
-        _mint(publicGoodsHero, id);
+        _safeMint(publicGoodsHero, id);
 
         publicGoodsFunded = true;
         emit Wtf(publicGoodsHero, msg.value);
@@ -365,7 +390,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     function requestBuy() external payable {
-        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() < 1, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
         require(msg.value >= currentPrice(), "ETH < price");
 
