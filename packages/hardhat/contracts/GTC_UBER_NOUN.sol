@@ -1,6 +1,31 @@
 pragma solidity ^0.8.6;
 //SPDX-License-Identifier: MIT
 
+/*********************************
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
+ * ░░░░░░██░░░████░░██░░░████░░░ *
+ * ░░██████░░░████████░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ *********************************/
+/* IN COLLABORATION WITH */
+
+/*
+  ____  _  _                 _        
+ / ___|(_)| |_   ___   ___  (_) _ __  
+| |  _ | || __| / __| / _ \ | || '_ \ 
+| |_| || || |_ | (__ | (_) || || | | |
+ \____||_| \__| \___| \___/ |_||_| |_|
+ 
+   Made by NoWonder
+   https://twitter.com/nowonderer
+ */
+
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -53,7 +78,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     uint256 private mintDeadline = block.timestamp + 7 days;
 
-    uint256 private constant limit = 1;
+    uint256 private constant limit = 2;
 
     uint256 private constant priceDeductionRate = 0.0001 ether;
 
@@ -67,27 +92,26 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     bytes[] private gunParts;
 
+    //bytes[] public revealedParts;
+
     string[] private gunPalette;
+
+    mapping(uint256 => string[]) private palettes;
 
     // WTF?!?!?!?!
     event Wtf(address winner, uint256 amount);
 
     constructor(
-        bytes memory _gunBody,
-        bytes memory _gunCessory,
-        bytes memory _gunHead,
-        bytes memory _gunGlasses,
+        bytes[] memory _gunParts,
         string memory _name,
         string memory _description,
         string memory _background,
         string[] memory _palette
     ) ERC721("GTC UBER-NOUN", "GUN") {
         // R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
-        gunParts.push(_gunBody);
-        gunParts.push(_gunCessory);
-        gunParts.push(_gunHead);
-        gunParts.push(_gunGlasses);
+        gunParts = _gunParts;
         gunPalette = _palette;
+        palettes[0] = _palette;
 
         // ASSEMBLE THE G_U_N
         tParams.push(
@@ -101,16 +125,46 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     /**
+     * @notice Add colors to a color palette.
+     * @dev This function can only be called by the owner.
+     */
+    /* function addManyColorsToPalette(
+        uint8 paletteIndex,
+        string[] calldata newColors
+    ) external onlyOwner {
+        require(
+            palettes[paletteIndex].length + newColors.length <= 256,
+            "Palettes can only hold 256 colors"
+        );
+        for (uint256 i = 0; i < newColors.length; i++) {
+            _addColorToPalette(paletteIndex, newColors[i]);
+        }
+    } */
+
+    /**
+     * @notice Add a single color to a color palette.
+     */
+    /* function _addColorToPalette(uint8 _paletteIndex, string calldata _color)
+        internal
+    {
+        palettes[_paletteIndex].push(_color);
+    }
+ */
+    /**
      * @notice Generate SVG using G_U_N params
      */
-    function generateSVG() private view returns (string memory) {
+    function generateSVG(uint256 tokenIndex)
+        private
+        view
+        returns (string memory)
+    {
         // prettier-ignore
 
         return string(
             abi.encodePacked(
                 '<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">',
-                '<rect width="100%" height="100%" fill="#', tParams[0].background, '" />',
-                _generateSVGRects(),
+                '<rect width="100%" height="100%" fill="#', tParams[tokenIndex].background, '" />',
+                _generateSVGRects(tokenIndex),
                 '</svg>'
             )
         );
@@ -120,7 +174,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
      * @notice Given RLE image parts and color palettes, generate SVG rects.
      */
     // prettier-ignore
-    function _generateSVGRects()
+    function _generateSVGRects(uint256 tokenIndex)
         private
         view
         returns (string memory svg)
@@ -134,9 +188,9 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
             '320' 
         ];
         string memory rects;
-        for (uint8 p = 0; p < tParams[0].parts.length; p++) {
-            DecodedImage memory image = _decodeRLEImage(tParams[0].parts[p]);
-            string[] storage palette = gunPalette;
+        for (uint8 p = 0; p < tParams[tokenIndex].parts.length; p++) {
+            DecodedImage memory image = _decodeRLEImage(tParams[tokenIndex].parts[p]);
+             string[] storage palette = palettes[tokenIndex];
             uint256 currentX = image.bounds.left;
             uint256 currentY = image.bounds.top;
             uint256 cursor;
@@ -227,10 +281,16 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Generate SVG, b64 encode it, construct an ERC721 token URI.
      */
-    function constructTokenURI() private view returns (string memory) {
+    function constructTokenURI(uint256 id)
+        private
+        view
+        returns (string memory)
+    {
         // prettier-ignore
 
-        string memory _uberSVG = Base64.encode(bytes(generateSVG()));
+        uint256 tokenIndex = id - 1;
+
+        string memory _uberSVG = Base64.encode(bytes(generateSVG(tokenIndex)));
 
         return
             string(
@@ -240,9 +300,9 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
                         bytes(
                             abi.encodePacked(
                                 '{"name":"',
-                                tParams[0].name,
+                                tParams[tokenIndex].name,
                                 '", "description":"',
-                                tParams[0].description,
+                                tParams[tokenIndex].description,
                                 '", "image": "',
                                 "data:image/svg+xml;base64,",
                                 _uberSVG,
@@ -264,8 +324,14 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         override
         returns (string memory)
     {
+        require(id <= limit, "non-existant");
         require(_exists(id), "not exist");
-        return constructTokenURI();
+        return constructTokenURI(id);
+    }
+
+    function contractURI() public view returns (string memory) {
+        return
+            "https://ipfs.io/ipfs/QmWiUHnQ6LrgbrktsGFjoNv2vLH5ae62frECo9JR7DAzRA";
     }
 
     function currentPrice() public view returns (uint256) {
