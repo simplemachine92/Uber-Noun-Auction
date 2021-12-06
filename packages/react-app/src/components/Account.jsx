@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Row, Col, Badge } from "antd";
 import React from "react";
 import Address from "./Address";
 import Balance from "./Balance";
@@ -52,11 +52,12 @@ export default function Account({
   isWalletConnected,
 }) {
   return (
-    <div>
-      {minimized ? (
-        ""
-      ) : (
-        <span>
+    <div class="container mx-auto flex flex-wrap flex-col sm:flex-row">
+      <span class="inline-flex sm:ml-auto sm:mt-0 justify-center sm:justify-start">
+        <a class="text-gray-500">
+          {isWalletConnected ? <div className="rounded-full bg-green-500 w-5 h-5 mt-5"></div> : ""}
+        </a>
+        <a class="ml-3 text-gray-500">
           {address ? (
             <Address
               address={address}
@@ -67,41 +68,44 @@ export default function Account({
           ) : (
             ""
           )}
-          {/* <Wallet
-            address={address}
-            provider={localProvider}
-            signer={userSigner}
-            ensProvider={mainnetProvider}
-            price={price}
-            color={currentTheme === "light" ? "#1890ff" : "#2caad9"}
-          /> */}
-        </span>
-      )}
-      {isWalletConnected ? (
-        <div className="rounded-full bg-green-500 w-5 h-5"></div>
-      ) : (
-        <div className="rounded-full bg-red-500 w-5 h-5"></div>
-      )}
-      {web3Modal &&
-        (web3Modal?.cachedProvider ? (
-          <Button
-            key="logoutbutton"
-            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20, color: "black" }}
-            size="large"
-            onClick={logoutOfWeb3Modal}
-          >
-            disconnet wallet
-          </Button>
-        ) : (
-          <Button
-            key="loginbutton"
-            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20, color: "black" }}
-            size="large"
-            onClick={loadWeb3Modal}
-          >
-            connect wallet
-          </Button>
-        ))}
+        </a>
+        <a class="ml-3 text-gray-500">
+          {web3Modal &&
+            (web3Modal?.cachedProvider ? (
+              <Button
+                key="logoutbutton"
+                style={{
+                  verticalAlign: "top",
+                  marginLeft: 8,
+                  marginTop: 4,
+                  border: 0,
+                  fontSize: 20,
+                  color: "black",
+                }}
+                size="large"
+                onClick={logoutOfWeb3Modal}
+              >
+                disconnet
+              </Button>
+            ) : (
+              <Button
+                key="loginbutton"
+                style={{
+                  verticalAlign: "top",
+                  marginLeft: 8,
+                  marginTop: 4,
+                  border: 0,
+                  fontSize: 20,
+                  color: "black",
+                }}
+                size="large"
+                onClick={loadWeb3Modal}
+              >
+                connect wallet
+              </Button>
+            ))}
+        </a>
+      </span>
     </div>
   );
 }

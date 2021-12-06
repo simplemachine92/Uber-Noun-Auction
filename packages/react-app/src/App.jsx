@@ -249,7 +249,7 @@ function App(props) {
         colors={["#FFFFFF"]}
         drawShape={ctx => {
           ctx.beginPath();
-          ctx.fillRect(10, 20, 10, 10);
+          ctx.fillRect(1, 1, 20, 20);
           ctx.closePath();
         }}
       />

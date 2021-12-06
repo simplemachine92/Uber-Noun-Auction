@@ -20,10 +20,7 @@ export default function Nav(props) {
           )}
         </Link>
       </Col>
-      <Col span={8}>
-        {props.pageTitle ? props.pageTitle : ""}
-        {props.pageSubTitle ? props.pageSubTitle : ""}
-      </Col>
+      <Col span={8}></Col>
       <Col span={8}>
         <div className="inline-flex">
           <Button
