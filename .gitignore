@@ -24,6 +24,7 @@ packages/hardhat-ts/cache
 packages/subgraph/config/config.json
 tenderly.yaml
 
+
 # dependencies
 /node_modules
 /.pnp
@@ -31,6 +32,7 @@ tenderly.yaml
 
 # testing
 coverage
+AUTH
 
 # production
 build

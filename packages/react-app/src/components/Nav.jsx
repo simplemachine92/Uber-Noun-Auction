@@ -10,7 +10,7 @@ export default function Nav(props) {
     setBlink(!blink);
   }, 1000);
   return (
-    <Row className="p-10">
+    <Row className="p-20">
       <Col span={8}>
         <Link to="/">
           {blink ? (

@@ -181,14 +181,13 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     args: [parts,
     parts1,
     pParts,
+    sParts,
+    aParts,
     background,
     devBackground,
     pBackground,
-    palette,
-    palette1,
-    palette2,
-    palette3,
-    palette4
+    sBackground,
+    aBackground
   ],
     log: true,
   });
