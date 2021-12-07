@@ -22,7 +22,7 @@ pragma solidity ^0.8.6;
 | |_| || || |_ | (__ | (_) || || | | |
  \____||_| \__| \___| \___/ |_||_| |_|
  
-   Made by NoWonder
+   Made by noWonder
    https://twitter.com/nowonderer
  */
 
@@ -42,6 +42,11 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     // 100% to Gitcoin for GR12
     address payable public constant gitcoin =
         payable(0xde21F729137C5Af1b01d73aF1dC21eFfa2B8a0d6);
+
+    // Gitcoin maintainer address, receives 4/5 of this collection,
+    // To be donated to selected GR12 participants
+    address payable public constant Owocki =
+        payable(0x00De4B13153673BCAE2616b67bf822500d325Fc3);
 
     // Structs from Noun gen process
     struct ContentBounds {
@@ -72,15 +77,15 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Auction variables !! Change before deploy !!
      */
-    uint256 private startingPrice = .01 ether;
+    uint256 private startingPrice = 9999999 ether;
 
     uint256 private startAt = block.timestamp;
 
     uint256 private mintDeadline = block.timestamp + 7 days;
 
-    uint256 private constant limit = 1;
+    uint256 private constant limit = 5;
 
-    uint256 private constant priceDeductionRate = 0.0001 ether;
+    uint256 private constant priceDeductionRate = 16.534 ether;
 
     // Set when the auction concludes
     bool private publicGoodsFunded;
@@ -90,48 +95,108 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
      */
     TokenURIParams[] private tParams;
 
-    bytes[] private gunParts;
-
-    //bytes[] public revealedParts;
-
-    string[] private gunPalette;
+    mapping(uint256 => string[]) private palettes;
 
     // WTF?!?!?!?!
     event Wtf(address winner, uint256 amount);
 
     constructor(
         bytes[] memory _gunParts,
-        string memory _name,
-        string memory _description,
+        bytes[] memory _devParts,
+        bytes[] memory _pParts,
         string memory _background,
-        string[] memory _palette
+        string memory _dBackground,
+        string memory _pBackground,
+        string[] memory _palette,
+        string[] memory _palette1,
+        string[] memory _palette2,
+        string[] memory _palette3,
+        string[] memory _palette4
     ) ERC721("GTC UBER-NOUN", "GUN") {
         // R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
-        gunParts = _gunParts;
-        gunPalette = _palette;
-
+        palettes[0] = _palette;
+        palettes[1] = _palette1;
+        palettes[2] = _palette2;
+        palettes[3] = _palette3;
+        palettes[4] = _palette4;
+        transferOwnership(0xA5bBA108F72249c6dBF8AfBd595df359b594AE8c);
         // ASSEMBLE THE G_U_N
+
         tParams.push(
             TokenURIParams({
-                name: _name,
-                description: _description,
-                parts: gunParts,
+                name: "GTC UBER-NOUN",
+                description: "1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN",
+                parts: _gunParts,
                 background: _background
+            })
+        );
+
+        tParams.push(
+            TokenURIParams({
+                name: "GTC DEV NOUN",
+                description: "Punch the keys!",
+                parts: _devParts,
+                background: _dBackground
+            })
+        );
+
+        tParams.push(
+            TokenURIParams({
+                name: "GTC SOLAR NOUN",
+                description: "Solarpunk AF!",
+                parts: _pParts,
+                background: _pBackground
+            })
+        );
+    }
+
+    // Can't forget the Scientist & the Advocate (they don't fit in constructor)
+    function addToken(
+        string calldata iname,
+        string calldata idescription,
+        bytes[] calldata iparts,
+        string calldata ibackground
+    ) external onlyOwner {
+        require(_tokenIds.current() < 5, "Only 5 in collection");
+
+        tParams.push(
+            TokenURIParams({
+                name: iname,
+                description: idescription,
+                parts: iparts,
+                background: ibackground
             })
         );
     }
 
     /**
+     * @notice Mint remaining nfts in collection to GTC Maintainer,
+      to distribute to selected winners from GR12
+     */
+    function mintRemaining() external onlyOwner {
+        require(_tokenIds.current() < 5, "Only 5 in collection");
+
+        _tokenIds.increment();
+
+        uint256 id = _tokenIds.current();
+        _safeMint(Owocki, id);
+    }
+
+    /**
      * @notice Generate SVG using G_U_N params
      */
-    function generateSVG() private view returns (string memory) {
+    function generateSVG(uint256 tokenIndex)
+        private
+        view
+        returns (string memory)
+    {
         // prettier-ignore
 
         return string(
             abi.encodePacked(
                 '<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">',
-                '<rect width="100%" height="100%" fill="#', tParams[0].background, '" />',
-                _generateSVGRects(),
+                '<rect width="100%" height="100%" fill="#', tParams[tokenIndex].background, '" />',
+                _generateSVGRects(tokenIndex),
                 '</svg>'
             )
         );
@@ -141,7 +206,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
      * @notice Given RLE image parts and color palettes, generate SVG rects.
      */
     // prettier-ignore
-    function _generateSVGRects()
+    function _generateSVGRects(uint256 tokenIndex)
         private
         view
         returns (string memory svg)
@@ -155,9 +220,9 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
             '320' 
         ];
         string memory rects;
-        for (uint8 p = 0; p < tParams[0].parts.length; p++) {
-            DecodedImage memory image = _decodeRLEImage(tParams[0].parts[p]);
-            string[] storage palette = gunPalette;
+        for (uint8 p = 0; p < tParams[tokenIndex].parts.length; p++) {
+            DecodedImage memory image = _decodeRLEImage(tParams[tokenIndex].parts[p]);
+             string[] storage palette = palettes[tokenIndex];
             uint256 currentX = image.bounds.left;
             uint256 currentY = image.bounds.top;
             uint256 cursor;
@@ -248,10 +313,16 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Generate SVG, b64 encode it, construct an ERC721 token URI.
      */
-    function constructTokenURI() private view returns (string memory) {
+    function constructTokenURI(uint256 id)
+        private
+        view
+        returns (string memory)
+    {
         // prettier-ignore
 
-        string memory _uberSVG = Base64.encode(bytes(generateSVG()));
+        uint256 tokenIndex = id - 1;
+
+        string memory _uberSVG = Base64.encode(bytes(generateSVG(tokenIndex)));
 
         return
             string(
@@ -261,9 +332,9 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
                         bytes(
                             abi.encodePacked(
                                 '{"name":"',
-                                tParams[0].name,
+                                tParams[tokenIndex].name,
                                 '", "description":"',
-                                tParams[0].description,
+                                tParams[tokenIndex].description,
                                 '", "image": "',
                                 "data:image/svg+xml;base64,",
                                 _uberSVG,
@@ -287,16 +358,16 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     {
         require(id <= limit, "non-existant");
         require(_exists(id), "not exist");
-        return constructTokenURI();
+        return constructTokenURI(id);
     }
 
     function contractURI() public view returns (string memory) {
         return
-            "https://ipfs.io/ipfs/QmWiUHnQ6LrgbrktsGFjoNv2vLH5ae62frECo9JR7DAzRA";
+            "https://ipfs.io/ipfs/QmWVbRkXypQyjsQNzpYXaJ4pQitv757Hj7Yqk4vGfL4rbY";
     }
 
     function currentPrice() public view returns (uint256) {
-        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() < 1, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
 
         uint256 timeElapsed = block.timestamp - startAt;
@@ -311,13 +382,13 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         nonReentrant
         returns (uint256)
     {
-        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() < 1, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
 
         _tokenIds.increment();
 
         uint256 id = _tokenIds.current();
-        _mint(publicGoodsHero, id);
+        _safeMint(publicGoodsHero, id);
 
         publicGoodsFunded = true;
         emit Wtf(publicGoodsHero, msg.value);
@@ -326,7 +397,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     function requestBuy() external payable {
-        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() < 1, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
         require(msg.value >= currentPrice(), "ETH < price");
 
