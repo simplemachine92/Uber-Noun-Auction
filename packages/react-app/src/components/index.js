@@ -21,7 +21,4 @@ export { default as L2Bridge } from "./L2Bridge";
 export { default as NetworkDisplay } from "./NetworkDisplay";
 export { default as FaucetHint } from "./FaucetHint";
 export { default as NetworkSwitch } from "./NetworkSwitch";
-export { default as Auction } from "./Auction";
-export { default as Nav } from "./Nav";
-export { default as Footer } from "./Footer";
-export { default as Faq } from "./Faq";
+export { default as AuctionCard } from "./Auction";
