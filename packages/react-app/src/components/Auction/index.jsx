@@ -16,9 +16,9 @@ export default function Auction({
   priceToMint,
 }) {
   const cardStyle = {
-    paddingLeft: 20,
-    paddingTop: 10,
-    paddingRight: 10,
+    paddingLeft: 0,
+    paddingTop: 0,
+    paddingRight: 0,
     marginBottom: 20,
     background: "rgb(29, 112, 18,1)",
   };
@@ -30,9 +30,11 @@ export default function Auction({
           <img className="logo_moonshot" src="ubernoun.png" />
           <Col span={14}>
             <div style={{ paddingLeft: 40, paddingTop: 0, paddingRight: 0 }}>
-              <h1>😈 👹 1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN 👹 😈 </h1>
+              <div className="bg-gift1 h-20 bg-no-repeat bg-cover w-4/4"></div>
               <Card style={cardStyle} title="" bordered={false}>
-                <h4>DUTCH AUCTION STARTS AT Ξ9,999,999</h4>
+                <h4>DUTCH AUCTION STARTING @</h4>
+                <br />
+                <h4>Ξ9,999,999</h4>
                 <h2>DECREASING BY Ξ16.534 / Second</h2>
 
                 <Button
@@ -44,7 +46,6 @@ export default function Auction({
                   MINT Ξ {priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}
                 </Button>
                 <br />
-                <h4>JUST PRESS THE BUTTON, ANON, AAAAAAHAHAHA</h4>
                 <h2>❤️ 100% Proceeds To Public Goods ❤️</h2>
                 <h2>❤️ and 100% On-Chain ❤️</h2>
                 <h2>
