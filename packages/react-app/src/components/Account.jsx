@@ -77,6 +77,11 @@ export default function Account({
           /> */}
         </span>
       )}
+      {isWalletConnected ? (
+        <div className="rounded-full bg-green-500 w-5 h-5"></div>
+      ) : (
+        <div className="rounded-full bg-red-500 w-5 h-5"></div>
+      )}
       {web3Modal &&
         (web3Modal?.cachedProvider ? (
           <Button
@@ -85,7 +90,7 @@ export default function Account({
             size="large"
             onClick={logoutOfWeb3Modal}
           >
-            DISCONNET WALLET
+            disconnet wallet
           </Button>
         ) : (
           <Button

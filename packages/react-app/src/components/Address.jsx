@@ -78,11 +78,6 @@ export default function Address(props) {
       {/* <span style={{ verticalAlign: "middle" }}>
         <Blockies seed={address.toLowerCase()} size={8} scale={props.fontSize ? props.fontSize / 7 : 4} />
       </span> */}
-      {props.isWalletConnected ? (
-        <div className="rounded-full bg-green-500 w-5 h-5"></div>
-      ) : (
-        <div className="rounded-full bg-red-500 w-5 h-5"></div>
-      )}
       <Button
         target="_blank"
         href={etherscanLink}
