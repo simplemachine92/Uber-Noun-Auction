@@ -19,7 +19,7 @@ import deployedContracts from "./contracts/hardhat_contracts.json";
 import { Transactor, Web3ModalSetup, Address as AddressHelper } from "./helpers";
 import { Home, ExampleUI, Subgraph } from "./views";
 import { useStaticJsonRPC, useUserSigner } from "./hooks";
-import { Color } from "chalk";
+import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 
 const { ethers } = require("ethers");
@@ -242,6 +242,19 @@ function App(props) {
 
   return (
     <div className="App bg-scientistBg min-w-full">
+      <Confetti
+        width={width}
+        height={height + 100}
+        colors={["#FFFFFF"]}
+        gravity={0.01}
+        friction={1}
+        numberOfPieces={30}
+        drawShape={ctx => {
+          ctx.beginPath();
+          ctx.fillRect(0.1, 0.1, 20, 20);
+          ctx.closePath();
+        }}
+      />
       {/* ✏️ Edit the header and change the title to your project name */}
       <Nav
         address={address}

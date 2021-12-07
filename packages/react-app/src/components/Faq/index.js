@@ -24,20 +24,29 @@ const Faq = () => {
         <h4>Authors: </h4>
         <br />
         <br />
-        Contract / Auction / Concept: <a href="https://twitter.com/nowonderer">NoWonder</a>
+        Smart-Contract / Site: <a href="https://twitter.com/nowonderer">NoWonder</a>
+        <br />
+        Noun Artwork: <a href="https://gitcoin.co/thecydonian">thecydonian</a>
         <br />
         Proposal: <a href="https://twitter.com/noun12LFG">Noun12</a>
         <br />
-        Uber-Noun Artwork: <a href="https://gitcoin.co/thecydonian">thecydonian</a>
+        Theme: <a href="https://github.com/farque65">farque65</a>
+        <br />
+        <br />
+        Special Thanks: <a href="https://twitter.com/owocki">Kevin Owocki</a>,{" "}
+        <a href="https://twitter.com/austingriffith">Austin Griffith</a>, <br />
+        <a href="https://twitter.com/Ruth_Chapa">Ruth Chapa</a>,{" "}
+        <a href="https://twitter.com/codenamejason">codenameJason</a>, and lastly
+        <br />
+        <br />
+        <a href="https://nouns.wtf/">NounsDAO for their generous contribution to GR 12, long live public goods.</a>
         <br />
         <br />
         <h4>What happens to the other Nouns?</h4>
         <br />
         <br />
         The remaining Nouns will go to winners that the Nouns community selects from each Gitcoin Grants Round 12
-        category (Climate, Advocacy, Longevity, Ethereum), in a limited edition NFT crossover event.
-        <br />
-        <br />
+        category (Climate, Advocacy, Longevity, Ethereum), in a limited edition NFT crossover event.{" "}
         <a href="https://nouns.wtf/vote/21">Read More</a>
       </div>
     </div>
