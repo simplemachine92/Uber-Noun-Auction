@@ -26,25 +26,6 @@ export default function Nav(props) {
       </Col>
       <Col span={8}>
         <div className="inline-flex">
-          <Button
-            style={{
-              verticalAlign: "top",
-              marginLeft: 8,
-              marginTop: 4,
-              border: 0,
-              fontSize: 20,
-              color: "black",
-              onHover: "#2B891C",
-            }}
-            href="https://nouns.wtf/vote/21"
-          >
-            nouns
-          </Button>
-          <Button
-            style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, border: 0, fontSize: 20, color: "black" }}
-          >
-            about us
-          </Button>
           <Account
             address={props.address}
             localProvider={props.localProvider}
@@ -58,7 +39,6 @@ export default function Nav(props) {
             networkDisplay={props.networkDisplay}
             isWalletConnected={props.isWalletConnected}
           />
-          {props.faucetHint}
         </div>
       </Col>
     </Row>
