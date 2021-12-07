@@ -16,7 +16,7 @@ module.exports = {
         gift3: "url('/src/assets/gift3.svg')",
         gift31: "url('/src/assets/gift31.svg')",
         gift32: "url('/src/assets/gift32.svg')",
-        scientistBg: "url('/src/assets/thescientist_bg.png')",
+        scientistBg: "url('/src/assets/scitile 2.png')",
       },
       colors: {
         orange: colors.orange,

@@ -30,7 +30,8 @@ const Faq = () => {
         <br />
         Proposal: <a href="https://twitter.com/noun12LFG">Noun12</a>
         <br />
-        Theme: <a href="https://github.com/farque65">farque65</a>
+        Theme: <a href="https://github.com/farque65">farque65</a> and{" "}
+        <a href="https://twitter.com/nowonderer">NoWonder</a>
         <br />
         <br />
         Special Thanks: <a href="https://twitter.com/owocki">Kevin Owocki</a>,{" "}

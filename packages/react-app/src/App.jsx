@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
 import "./App.css";
 import { Account, Contract, Faucet, GasGauge, Header, Ramp, NetworkDisplay, FaucetHint, Nav } from "./components";
-import { NETWORKS, ALCHEMY_KEY } from "./constants";
+import { NETWORKS } from "./constants";
 import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
@@ -46,10 +46,12 @@ const { ethers } = require("ethers");
 //const targetNetwork = NETWORKS.matic; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
-const DEBUG = true;
+const DEBUG = false;
 const NETWORKCHECK = true;
 
 const web3Modal = Web3ModalSetup();
+
+const ALCHEMY_KEY = process.env.REACT_APP_MY_ALCHEMY;
 
 // 🛰 providers
 const providers = [
@@ -161,10 +163,6 @@ function App(props) {
 
   // keep track of a variable from the contract in the local React state:
   const priceToMint = useContractReader(readContracts, "GTC_UBER_NOUN", "currentPrice");
-  const svg = useContractReader(readContracts, "GTC_UBER_NOUN", "uberSVG");
-  const URI = useContractReader(readContracts, "GTC_UBER_NOUN", "uberURI");
-  console.log(svg);
-  console.log(URI);
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
   console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)

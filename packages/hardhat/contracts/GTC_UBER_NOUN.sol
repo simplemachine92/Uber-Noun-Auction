@@ -170,8 +170,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Mint remaining nfts in collection to GTC Maintainer,
-      to distribute to selected winners from GR12
+     * @notice Mint remaining nfts (4) in collection to GTC Maintainer,
+      to distribute to select winners from GR12
      */
     function mintRemaining() external onlyOwner {
         require(_tokenIds.current() < 5, "Only 5 in collection");
@@ -183,7 +183,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Generate SVG using G_U_N params
+     * @notice Generate SVG using tParams by index
      */
     function generateSVG(uint256 tokenIndex)
         private
