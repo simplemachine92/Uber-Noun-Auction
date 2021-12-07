@@ -5,7 +5,7 @@ import { white } from "chalk";
 
 const Faq = () => {
   return (
-    <div className="bg-gray-100 flex-wrapper margin-top 40">
+    <div className="bg-gray-100 flex-wrapper">
       <div className="bg-gray-100 p-200 margin-top 40">
         <br />
         <h4>faq</h4>

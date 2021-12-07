@@ -21,7 +21,6 @@ import { Home, ExampleUI, Subgraph } from "./views";
 import { useStaticJsonRPC, useUserSigner } from "./hooks";
 import { Color } from "chalk";
 import useWindowSize from "react-use/lib/useWindowSize";
-import Confetti from "react-confetti";
 
 const { ethers } = require("ethers");
 /*
@@ -243,16 +242,6 @@ function App(props) {
 
   return (
     <div className="App bg-scientistBg min-w-full">
-      {/* <Confetti
-        width={width}
-        height={height}
-        colors={["#FFFFFF"]}
-        drawShape={ctx => {
-          ctx.beginPath();
-          ctx.fillRect(10, 20, 10, 10);
-          ctx.closePath();
-        }}
-      /> */}
       {/* ✏️ Edit the header and change the title to your project name */}
       <Nav
         address={address}
