@@ -17,7 +17,7 @@ function Home({ writeContracts, readContracts, priceToMint, tx }) {
   return (
     <div>
       <Auction writeContracts={writeContracts} readContracts={readContracts} priceToMint={priceToMint} tx={tx} />
-      <div className="bg-gray-100">
+      <div className="bg-blue-200">
         <Row>
           <Col span={12} offset={6}>
             <Faq />

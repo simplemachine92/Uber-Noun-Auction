@@ -30,9 +30,9 @@ const Footer = () => {
             <span className="ml-3 text-xl">built w/ Scaffold-Eth</span>
           </a>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start text-lg">
-            <a className="text-gray-500 underline hover:text-blue-900">telegram</a>
-            <a className="ml-6 text-gray-500 underline hover:text-blue-500">twitter</a>
-            <a className="ml-6 text-gray-500 underline hover:text-indigo-500">discord</a>
+            <a href="https://twitter.com/gitcoin" className="ml-6 text-gray-500 underline hover:text-blue-500">
+              twitter
+            </a>
           </span>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function Auction({
     paddingTop: 0,
     paddingRight: 0,
     marginBottom: 20,
-    background: "rgb(29, 112, 18,1)",
+    background: "#439974",
   };
 
   return (
@@ -32,11 +32,11 @@ export default function Auction({
             <div style={{ paddingLeft: 40, paddingTop: 0, paddingRight: 0 }}>
               <div className="bg-gift1 h-20 bg-no-repeat bg-cover w-4/4"></div>
               <Card style={cardStyle} title="" bordered={false}>
-                <h4>DUTCH AUCTION STARTING AT</h4>
+                <h3>DUTCH AUCTION STARTS AT</h3>
                 <br />
                 <br />
-                <h4>Ξ9,999,999</h4>
-                <h2>DECREASING BY Ξ16.534 / Second</h2>
+                <h3>Ξ999,999</h3>
+                <h2>DECREASING BY Ξ1.6534 / Second</h2>
 
                 <Button
                   type="primary"
@@ -49,9 +49,6 @@ export default function Auction({
                 <br />
                 <h2>❤️ 100% Proceeds To Public Goods ❤️</h2>
                 <h2>❤️ and 100% On-Chain ❤️</h2>
-                <h2>
-                  Seriously, you can <a href="placeholder">read the contract</a>
-                </h2>
               </Card>
             </div>
           </Col>

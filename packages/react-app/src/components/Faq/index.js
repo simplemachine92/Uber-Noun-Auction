@@ -1,12 +1,10 @@
 import React from "react";
-import { Collapse } from "antd";
 import "./Faq.css";
-import { white } from "chalk";
 
 const Faq = () => {
   return (
-    <div className="bg-gray-100 flex-wrapper">
-      <div className="bg-gray-100 p-200 margin-top 40">
+    <div className="bg-blue-200 flex-wrapper">
+      <div className="bg-blue-200 p-200 margin-top 40">
         <br />
         <h4>faq</h4>
         <br />
@@ -49,6 +47,15 @@ const Faq = () => {
         The remaining Nouns will go to winners that the Nouns community selects from each Gitcoin Grants Round 12
         category (Climate, Advocacy, Longevity, Ethereum), in a limited edition NFT crossover event.{" "}
         <a href="https://nouns.wtf/vote/21">Read More</a>
+        <br />
+        <br />
+        <h4>Where's the Contract?</h4>
+        <br />
+        <br />
+        <a href="placeholder">read the contract</a>
+        <br />
+        <br />
+        <img src="builtoneth.png" />
       </div>
     </div>
   );
