@@ -9,7 +9,7 @@ const Faq = () => {
         <h4>faq</h4>
         <br />
         <br />
-        <img className="p-400" src="allnouns.jpg" />
+        <img className="p-200" src="allnouns.jpg" />
         <br />
         <h4>What the heck is this?</h4>
         <br />
@@ -24,12 +24,12 @@ const Faq = () => {
         <br />
         Smart-Contract / Site: <a href="https://twitter.com/nowonderer">NoWonder</a>
         <br />
-        Noun Artwork: <a href="https://gitcoin.co/thecydonian">thecydonian</a>
+        NounBots Artwork: <a href="https://gitcoin.co/thecydonian">thecydonian</a>
         <br />
         Proposal: <a href="https://twitter.com/noun12LFG">Noun12</a>
         <br />
-        Theme: <a href="https://github.com/farque65">farque65</a> and{" "}
-        <a href="https://twitter.com/nowonderer">NoWonder</a>
+        Theme: <a href="https://github.com/farque65">farque65</a>, <a href="https://twitter.com/nowonderer">NoWonder</a>{" "}
+        and <a href="https://twitter.com/Ruth_Chapa">Ruth Chapa</a>
         <br />
         <br />
         Special Thanks: <a href="https://twitter.com/owocki">Kevin Owocki</a>,{" "}
@@ -41,10 +41,10 @@ const Faq = () => {
         <a href="https://nouns.wtf/">NounsDAO for their generous contribution to GR 12, long live public goods.</a>
         <br />
         <br />
-        <h4>What happens to the other Nouns?</h4>
+        <h4>What happens to the other NounBots?</h4>
         <br />
         <br />
-        The remaining Nouns will go to winners that the Nouns community selects from each Gitcoin Grants Round 12
+        The remaining NounBots will go to winners that the Nouns community selects from each Gitcoin Grants Round 12
         category (Climate, Advocacy, Longevity, Ethereum), in a limited edition NFT crossover event.{" "}
         <a href="https://nouns.wtf/vote/21">Read More</a>
         <br />
@@ -55,8 +55,8 @@ const Faq = () => {
         <a href="placeholder">read the contract</a>
         <br />
         <br />
-        <img src="builtoneth.png" />
       </div>
+      <img className="p-200" src="builtoneth.png" />
     </div>
   );
 };
