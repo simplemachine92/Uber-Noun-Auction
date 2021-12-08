@@ -24,6 +24,7 @@ pragma solidity ^0.8.6;
  
    Made by nowonder
    https://twitter.com/nowonderer
+
  */
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -92,6 +93,16 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     // Set when the auction concludes
     bool private publicGoodsFunded;
 
+    //prettier-ignore
+    string[] public dPalette = ["","000000","ffffff","e9255c","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","6c7887","00d2a2","407c6a","00b083","ff0015","ff000f"];
+    //prettier-ignore
+    string[] public pPalette = ["","000000","ffffff","6c7887","a9ead5","b3e1ff","407c6a","bfebff","d8f8ff","00d2a2","00b083","08243e","d8e3f2"];
+    //prettier-ignore
+    string[] public sPalette = ["","000000","ffffff","d8e3f2","bfebff","9caec4","c3ccda","c2ccda","ced4df","c3ccdb","c2cbda","6c7887","00d2a2","407c6a","00b083"];
+    //prettier-ignore
+    string[] public aPalette = ["","000000","ffffff","9caec4","6c7887","00b083","00d2a2","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","407c6a","00d69f"];
+    //prettier-ignore
+    string[] public uPalette = ["","000000","f13e87","8145d2","00b083","00d2a2","442484","ffffff","00d6ca"];
     /**
      * @notice Stores Noun data privately until auction concludes
      */
@@ -361,10 +372,18 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         return price;
     }
 
+    function initPalette() external onlyOwner {
+        addManyColorsToPalette(0, dPalette);
+        addManyColorsToPalette(1, pPalette);
+        addManyColorsToPalette(2, sPalette);
+        addManyColorsToPalette(3, aPalette);
+        addManyColorsToPalette(4, uPalette);
+    }
+
     /**
      * @notice Add a single color to a color palette.
      */
-    function _addColorToPalette(uint8 _paletteIndex, string calldata _color)
+    function _addColorToPalette(uint8 _paletteIndex, string storage _color)
         private
         onlyOwner
     {
@@ -376,8 +395,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
      */
     function addManyColorsToPalette(
         uint8 paletteIndex,
-        string[] calldata newColors
-    ) external onlyOwner {
+        string[] storage newColors
+    ) private onlyOwner {
         require(
             palettes[paletteIndex].length + newColors.length <= 256,
             "Palettes can only hold 256 colors"
@@ -397,7 +416,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         for (uint256 i = 0; i < 4; i++) {
             _tokenIds.increment();
             uint256 id = _tokenIds.current();
-            _safeMint(Owocki, id);
+            _safeMint(msg.sender, id);
         }
     }
 
@@ -411,7 +430,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         _tokenIds.increment();
 
         uint256 id = _tokenIds.current();
-        _safeMint(Owocki, id);
+        _safeMint(msg.sender, id);
     }
 
     function startAuction() external onlyOwner {
