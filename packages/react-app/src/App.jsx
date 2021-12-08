@@ -84,6 +84,7 @@ function App(props) {
   const localProvider = useStaticJsonRPC([
     process.env.REACT_APP_PROVIDER ? process.env.REACT_APP_PROVIDER : targetNetwork.rpcUrl,
   ]);
+
   const mainnetProvider = useStaticJsonRPC(providers);
 
   if (DEBUG) console.log(`Using ${selectedNetwork} network`);
@@ -107,8 +108,8 @@ function App(props) {
   /* 🔥 This hook will get the price of Gas from ⛽️ EtherGasStation */
   const gasPrice = useGasPrice(targetNetwork, "fast");
   // Use your injected provider from 🦊 Metamask or if you don't have it then instantly generate a 🔥 burner wallet.
-  // const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider);
-  const userSigner = useUserSigner(injectedProvider, localProvider, false);
+  const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider);
+  const userSigner = userProviderAndSigner.signer;
 
   useEffect(() => {
     async function getAddress() {
@@ -240,6 +241,12 @@ function App(props) {
 
   return (
     <div className="App bg-scientistBg min-w-full">
+      <NetworkDisplay
+        NETWORKCHECK={NETWORKCHECK}
+        localChainId={localChainId}
+        selectedChainId={selectedChainId}
+        targetNetwork={targetNetwork}
+      />
       <Confetti
         width={width}
         height={height + 100}
@@ -264,20 +271,11 @@ function App(props) {
         loadWeb3Modal={loadWeb3Modal}
         logoutOfWeb3Modal={logoutOfWeb3Modal}
         blockExplorer={blockExplorer}
-        networkDisplay={
-          <NetworkDisplay
-            NETWORKCHECK={NETWORKCHECK}
-            localChainId={localChainId}
-            selectedChainId={selectedChainId}
-            targetNetwork={targetNetwork}
-          />
-        }
         faucetHint={
           faucetAvailable ? <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider} /> : ""
         }
         isWalletConnected={isWalletConnected}
       />
-
       <Switch>
         <Route exact path="/">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
@@ -294,21 +292,6 @@ function App(props) {
             contractConfig={contractConfig}
           />
         </Route>
-        <Route path="/aboutgtc"></Route>
-        <Route path="/exampleui">
-          <ExampleUI
-            address={address}
-            userSigner={userSigner}
-            mainnetProvider={mainnetProvider}
-            localProvider={localProvider}
-            yourLocalBalance={yourLocalBalance}
-            price={price}
-            tx={tx}
-            writeContracts={writeContracts}
-            readContracts={readContracts}
-            //purpose={purpose}
-          />
-        </Route>
         <Route path="/subgraph">
           <Subgraph
             subgraphUri={props.subgraphUri}
@@ -318,7 +301,6 @@ function App(props) {
           />
         </Route>
       </Switch>
-
       {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
       {/* <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
         <div style={{ display: "flex", flex: 1, alignItems: "center" }}>
@@ -336,7 +318,6 @@ function App(props) {
           />
         </div>
       </div> */}
-
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
       {/* <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
         <Row align="middle" gutter={[4, 4]}>
