@@ -104,9 +104,9 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     //prettier-ignore
     string[] private uPalette = ["","000000","f13e87","8145d2","00b083","00d2a2","442484","ffffff","00d6ca"];
     /**
-     * @notice Stores Noun data privately until auction concludes
+     * @notice Stores Noun Parts
      */
-    TokenURIParams[] private tParams;
+    TokenURIParams[] public tParams;
 
     mapping(uint256 => string[]) private palettes;
 
