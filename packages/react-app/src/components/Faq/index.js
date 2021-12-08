@@ -4,7 +4,7 @@ import "./Faq.css";
 const Faq = () => {
   return (
     <div className="bg-blue-200 flex-wrapper">
-      <audio id="player" controls src="sugarplum.mp3" autoplay loop />
+      <audio id="player" controls src="sugarplum.mp3" autoPlay loop />
       <div className="bg-blue-200 p-200 margin-top 40">
         <br />
         <h4>faq</h4>
