@@ -79,7 +79,6 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Auction variables
      */
-    //address public publicGoodsHero;
 
     uint256 private startingPrice = 999999 ether;
 
@@ -95,6 +94,7 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
 
     bool private publicGoodsFunded;
 
+    // Palettes for NounBots
     //prettier-ignore
     string[] private dPalette = ["","000000","ffffff","e9255c","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","6c7887","00d2a2","407c6a","00b083","ff0015","ff000f"];
     //prettier-ignore
@@ -105,10 +105,11 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
     string[] private aPalette = ["","000000","ffffff","9caec4","6c7887","00b083","00d2a2","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","407c6a","00d69f"];
     //prettier-ignore
     string[] private uPalette = ["","000000","f13e87","8145d2","00b083","00d2a2","442484","ffffff","00d6ca"];
+
     /**
      * @notice Stores Noun Parts
      */
-    TokenURIParams[] public tParams;
+    TokenURIParams[] private tParams;
 
     mapping(uint256 => string[]) private palettes;
 
@@ -480,7 +481,7 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
         return id;
     }
 
-    function requestBuy() external payable nonReentrant {
+    function requestBuy() public payable nonReentrant {
         require(auctionStarted == true, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
