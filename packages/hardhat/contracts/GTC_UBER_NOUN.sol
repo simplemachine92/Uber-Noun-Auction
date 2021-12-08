@@ -13,6 +13,7 @@ pragma solidity ^0.8.6;
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  *********************************/
+
 /* IN COLLABORATION WITH */
 
 /*
@@ -34,7 +35,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import {Base64} from "base64-sol/base64.sol";
 
-contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
+contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
     using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -76,8 +77,10 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Auction variables !! Change before deploy !!
+     * @notice Auction variables
      */
+    //address public publicGoodsHero;
+
     uint256 private startingPrice = 999999 ether;
 
     uint256 private startAt;
@@ -86,11 +89,10 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     uint256 private constant limit = 5;
 
-    uint256 private constant priceDeductionRate = 1.6534 ether;
+    uint256 private priceDeductionRate = 1.9289 ether;
 
     bool private auctionStarted;
 
-    // Set when the auction concludes
     bool private publicGoodsFunded;
 
     //prettier-ignore
@@ -124,16 +126,14 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         string memory _pBackground,
         string memory _sBackground,
         string memory _aBackground
-    ) ERC721("GTC UBER-NOUN", "GUN") {
-        // R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
-
+    ) ERC721("GTC UBER-NOUNS", "GUN") {
         // Ownership to nowonder to initCollection and startAuction
         transferOwnership(0xb010ca9Be09C382A9f31b79493bb232bCC319f01);
 
         // ASSEMBLE THE NOUNS
         tParams.push(
             TokenURIParams({
-                name: "GTC DEV NOUN",
+                name: "DEV NOUNBOT",
                 description: "PUNCH THE KEYS!",
                 parts: _devParts,
                 background: _dBackground
@@ -142,7 +142,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
         tParams.push(
             TokenURIParams({
-                name: "GTC SOLAR NOUN",
+                name: "SOLAR NOUNBOT",
                 description: "SOLARPUNK AF!",
                 parts: _pParts,
                 background: _pBackground
@@ -151,7 +151,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
         tParams.push(
             TokenURIParams({
-                name: "GTC SCIENCE NOUN",
+                name: "SCIENCE NOUNBOT",
                 description: "WOO SCIENCE",
                 parts: _sParts,
                 background: _sBackground
@@ -160,7 +160,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
         tParams.push(
             TokenURIParams({
-                name: "GTC ADVOCATE NOUN",
+                name: "ADVOCATE NOUNBOT",
                 description: "PUBLIC GOODS R GOOD!",
                 parts: _aParts,
                 background: _aBackground
@@ -170,8 +170,8 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         // Make sure GUN is last
         tParams.push(
             TokenURIParams({
-                name: "GTC UBER-NOUN",
-                description: "1/1 PFP, EVER, FOREVER.",
+                name: "UBER-NOUNBOT",
+                description: "THE VEWY WAWEST NOUNBOT",
                 parts: _gunParts,
                 background: _background
             })
@@ -364,6 +364,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     function currentPrice() public view returns (uint256) {
         require(auctionStarted == true, "Auction not started");
+        require(publicGoodsFunded == false, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
 
@@ -372,14 +373,6 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         uint256 price = startingPrice - deduction;
 
         return price;
-    }
-
-    function initPalette() external onlyOwner {
-        addManyColorsToPalette(0, dPalette);
-        addManyColorsToPalette(1, pPalette);
-        addManyColorsToPalette(2, sPalette);
-        addManyColorsToPalette(3, aPalette);
-        addManyColorsToPalette(4, uPalette);
     }
 
     /**
@@ -415,6 +408,12 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     function initCollection() external onlyOwner {
         require(_tokenIds.current() == 0, "Collection of 5");
 
+        addManyColorsToPalette(0, dPalette);
+        addManyColorsToPalette(1, pPalette);
+        addManyColorsToPalette(2, sPalette);
+        addManyColorsToPalette(3, aPalette);
+        addManyColorsToPalette(4, uPalette);
+
         for (uint256 i = 0; i < 4; i++) {
             _tokenIds.increment();
             uint256 id = _tokenIds.current();
@@ -435,17 +434,37 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         _safeMint(Owocki, id);
     }
 
+    /**
+     * @notice Start Auction with Default Params
+     */
     function startAuction() external onlyOwner {
-        mintDeadline = block.timestamp + 7 days;
+        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() == 4, "initCollection first");
+
+        mintDeadline = block.timestamp + 6 days;
         startAt = block.timestamp;
         auctionStarted = true;
     }
 
-    function buy(address publicGoodsHero)
-        private
-        nonReentrant
-        returns (uint256)
-    {
+    /**
+     * @notice Failsafe to restart auction with params in case of failure
+     */
+    function restartAuction(
+        uint256 _seconds,
+        uint256 _startingPrice,
+        uint256 _priceDeduction
+    ) external onlyOwner {
+        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() == 4, "initCollection first");
+
+        startingPrice = _startingPrice;
+        priceDeductionRate = _priceDeduction;
+        mintDeadline = block.timestamp + _seconds;
+        startAt = block.timestamp;
+        auctionStarted = true;
+    }
+
+    function buy(address buyer) private returns (uint256) {
         require(auctionStarted == true, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
@@ -453,15 +472,15 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         _tokenIds.increment();
 
         uint256 id = _tokenIds.current();
-        _safeMint(publicGoodsHero, id);
+        _safeMint(buyer, id);
 
         publicGoodsFunded = true;
-        emit Wtf(publicGoodsHero, msg.value);
+        emit Wtf(buyer, msg.value);
 
         return id;
     }
 
-    function requestBuy() external payable {
+    function requestBuy() external payable nonReentrant {
         require(auctionStarted == true, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
