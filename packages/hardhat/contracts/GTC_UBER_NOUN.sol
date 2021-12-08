@@ -77,15 +77,17 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Auction variables !! Change before deploy !!
      */
-    uint256 private startingPrice = 999999 ether;
+    uint256 private startingPrice = 99 ether;
 
-    uint256 private startAt = block.timestamp;
+    uint256 private startAt;
 
-    uint256 private mintDeadline = block.timestamp + 7 days;
+    uint256 private mintDeadline;
 
     uint256 private constant limit = 5;
 
     uint256 private constant priceDeductionRate = 1.6534375 ether;
+
+    bool private auctionStarted;
 
     // Set when the auction concludes
     bool private publicGoodsFunded;
@@ -137,7 +139,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         tParams.push(
             TokenURIParams({
                 name: "GTC SCIENCE NOUN",
-                description: "SCIENCE, BITCH!",
+                description: "WOO SCIENCE",
                 parts: _sParts,
                 background: _sBackground
             })
@@ -161,29 +163,6 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
                 background: _background
             })
         );
-    }
-
-    /**
-     * @notice Add a single color to a color palette.
-     */
-    function _addColorToPalette(uint8 _paletteIndex, string calldata _color)
-        private
-        onlyOwner
-    {
-        palettes[_paletteIndex].push(_color);
-    }
-
-    function addManyColorsToPalette(
-        uint8 paletteIndex,
-        string[] calldata newColors
-    ) external onlyOwner {
-        require(
-            palettes[paletteIndex].length + newColors.length <= 256,
-            "Palettes can only hold 256 colors"
-        );
-        for (uint256 i = 0; i < newColors.length; i++) {
-            _addColorToPalette(paletteIndex, newColors[i]);
-        }
     }
 
     /**
@@ -371,6 +350,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     function currentPrice() public view returns (uint256) {
+        require(auctionStarted == true, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
 
@@ -382,16 +362,62 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     /**
+     * @notice Add a single color to a color palette.
+     */
+    function _addColorToPalette(uint8 _paletteIndex, string calldata _color)
+        private
+        onlyOwner
+    {
+        palettes[_paletteIndex].push(_color);
+    }
+
+    /**
+     * @notice Add colors we couldn't include in the constructor.
+     */
+    function addManyColorsToPalette(
+        uint8 paletteIndex,
+        string[] calldata newColors
+    ) external onlyOwner {
+        require(
+            palettes[paletteIndex].length + newColors.length <= 256,
+            "Palettes can only hold 256 colors"
+        );
+        for (uint256 i = 0; i < newColors.length; i++) {
+            _addColorToPalette(paletteIndex, newColors[i]);
+        }
+    }
+
+    /**
      * @notice Mint (4) in collection to GTC Maintainer,
       to distribute to select winners from GR12
      */
-    function mintRemaining() external onlyOwner {
-        require(_tokenIds.current() < 4, "Collection of 5");
+    function initCollection() external onlyOwner {
+        require(_tokenIds.current() == 0, "Collection of 5");
+
+        for (uint256 i = 0; i < 4; i++) {
+            _tokenIds.increment();
+            uint256 id = _tokenIds.current();
+            _safeMint(Owocki, id);
+        }
+    }
+
+    /**
+     * @notice Mint Uber to GTC Maintainer in case of auction failure
+     */
+    function recoverUber() external onlyOwner {
+        require(_tokenIds.current() < limit, "Only one.. wtf?");
+        require(_tokenIds.current() == 4, "initCollection first");
 
         _tokenIds.increment();
 
         uint256 id = _tokenIds.current();
-        _safeMint(msg.sender, id);
+        _safeMint(Owocki, id);
+    }
+
+    function startAuction() external onlyOwner {
+        mintDeadline = block.timestamp + 7 days;
+        startAt = block.timestamp;
+        auctionStarted = true;
     }
 
     function buy(address publicGoodsHero)
@@ -399,6 +425,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         nonReentrant
         returns (uint256)
     {
+        require(auctionStarted == true, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
 
@@ -414,6 +441,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     }
 
     function requestBuy() external payable {
+        require(auctionStarted == true, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(block.timestamp < mintDeadline, "auction expired, wtf");
         require(msg.value >= currentPrice(), "ETH < price");
