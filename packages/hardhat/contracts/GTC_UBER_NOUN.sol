@@ -78,7 +78,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Auction variables !! Change before deploy !!
      */
-    uint256 private startingPrice = 99 ether;
+    uint256 private startingPrice = 999999 ether;
 
     uint256 private startAt;
 
@@ -86,7 +86,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
 
     uint256 private constant limit = 5;
 
-    uint256 private constant priceDeductionRate = 1.6534375 ether;
+    uint256 private constant priceDeductionRate = 1.6534 ether;
 
     bool private auctionStarted;
 
@@ -94,15 +94,15 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
     bool private publicGoodsFunded;
 
     //prettier-ignore
-    string[] public dPalette = ["","000000","ffffff","e9255c","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","6c7887","00d2a2","407c6a","00b083","ff0015","ff000f"];
+    string[] private dPalette = ["","000000","ffffff","e9255c","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","6c7887","00d2a2","407c6a","00b083","ff0015","ff000f"];
     //prettier-ignore
-    string[] public pPalette = ["","000000","ffffff","6c7887","a9ead5","b3e1ff","407c6a","bfebff","d8f8ff","00d2a2","00b083","08243e","d8e3f2"];
+    string[] private pPalette = ["","000000","ffffff","6c7887","a9ead5","b3e1ff","407c6a","bfebff","d8f8ff","00d2a2","00b083","08243e","d8e3f2"];
     //prettier-ignore
-    string[] public sPalette = ["","000000","ffffff","d8e3f2","bfebff","9caec4","c3ccda","c2ccda","ced4df","c3ccdb","c2cbda","6c7887","00d2a2","407c6a","00b083"];
+    string[] private sPalette = ["","000000","ffffff","d8e3f2","bfebff","9caec4","c3ccda","c2ccda","ced4df","c3ccdb","c2cbda","6c7887","00d2a2","407c6a","00b083"];
     //prettier-ignore
-    string[] public aPalette = ["","000000","ffffff","9caec4","6c7887","00b083","00d2a2","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","407c6a","00d69f"];
+    string[] private aPalette = ["","000000","ffffff","9caec4","6c7887","00b083","00d2a2","24bf47","28bf47","ff27d0","4228ff","ff29d1","4229ff","4128ff","ff29d0","407c6a","00d69f"];
     //prettier-ignore
-    string[] public uPalette = ["","000000","f13e87","8145d2","00b083","00d2a2","442484","ffffff","00d6ca"];
+    string[] private uPalette = ["","000000","f13e87","8145d2","00b083","00d2a2","442484","ffffff","00d6ca"];
     /**
      * @notice Stores Noun data privately until auction concludes
      */
@@ -126,13 +126,15 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         string memory _aBackground
     ) ERC721("GTC UBER-NOUN", "GUN") {
         // R U 'RAY' ANON? AAAAAAAAHAHAHHAHAHHAAHAH
-        transferOwnership(0xA5bBA108F72249c6dBF8AfBd595df359b594AE8c);
+
+        // Ownership to nowonder to initCollection and startAuction
+        transferOwnership(0xb010ca9Be09C382A9f31b79493bb232bCC319f01);
 
         // ASSEMBLE THE NOUNS
         tParams.push(
             TokenURIParams({
                 name: "GTC DEV NOUN",
-                description: "Punch the keys!",
+                description: "PUNCH THE KEYS!",
                 parts: _devParts,
                 background: _dBackground
             })
@@ -169,7 +171,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         tParams.push(
             TokenURIParams({
                 name: "GTC UBER-NOUN",
-                description: "1/1 PFP, EVER, FOREVER, LET THE GAMES BEGIN",
+                description: "1/1 PFP, EVER, FOREVER.",
                 parts: _gunParts,
                 background: _background
             })
@@ -416,7 +418,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         for (uint256 i = 0; i < 4; i++) {
             _tokenIds.increment();
             uint256 id = _tokenIds.current();
-            _safeMint(msg.sender, id);
+            _safeMint(Owocki, id);
         }
     }
 
@@ -430,7 +432,7 @@ contract GTC_UBER_NOUN is ERC721, ReentrancyGuard, Ownable {
         _tokenIds.increment();
 
         uint256 id = _tokenIds.current();
-        _safeMint(msg.sender, id);
+        _safeMint(Owocki, id);
     }
 
     function startAuction() external onlyOwner {
