@@ -23,31 +23,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   let devBackground = "cce5ff";
 
   let parts1 = [devBody, devCessory, devHead, devGlasses];
-  fs.writeFileSync("./parts/parts1.json", JSON.stringify(parts1));
-  fs.writeFileSync("./parts/bg1.json", JSON.stringify(devBackground));
-
-  let palette1 = [
-    "",
-    "000000",
-    "ffffff",
-    "e9255c",
-    "24bf47",
-    "28bf47",
-    "ff27d0",
-    "4228ff",
-    "ff29d1",
-    "4229ff",
-    "4128ff",
-    "ff29d0",
-    "26c047",
-    "26c048",
-    "6c7887",
-    "00d2a2",
-    "407c6a",
-    "00b083",
-    "ff0015",
-    "ff000f",
-  ];
 
   let punkBody =
     "0x0016171f09030201030a040302020309040802060401050102010001020203040204040105010201000102010305020404010501020100020201030102020302020106010401060205010001020103020201030102010301020106010401060107010501000202010301020103010201030102010401060104020701000802030401080107010009020204";
@@ -61,25 +36,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   let pParts = [punkBody, punkCessory, punkHead, punkGlasses];
 
   let pBackground = "cfe9e8";
-
-  let palette2 = [
-    "",
-    "000000",
-    "ffffff",
-    "6c7887",
-    "a9ead5",
-    "b3e1ff",
-    "407c6a",
-    "bfebff",
-    "d8f8ff",
-    "00d2a2",
-    "00b083",
-    "24bf47",
-    "26c047",
-    "26c048",
-    "08243e",
-    "d8e3f2",
-  ];
 
   //3
   let sBody =
@@ -95,27 +51,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   let sBackground = "b7c3d6";
 
-  let palette3 = [
-    "",
-    "000000",
-    "ffffff",
-    "d8e3f2",
-    "bfebff",
-    "9caec4",
-    "c3ccda",
-    "c2ccda",
-    "ced4df",
-    "c3ccdb",
-    "c2cbda",
-    "6c7887",
-    "00d2a2",
-    "407c6a",
-    "00b083",
-  ];
-
-  fs.writeFileSync("./parts/ScientistParts.json", JSON.stringify(sParts));
-  fs.writeFileSync("./parts/sBG.json", JSON.stringify(sBackground));
-
   //4
   let aBody =
     "0x000e171f0108020e00020301020203010202030e00010302020103020202030e00020301020203010202030e0008020e00030001041200030001041200030001040102110003000104020203000d0203000402020005020105020605020400040201000302020403050204030205000802050402020104010206000e02010401020700030201000102010601020306030202040800010202000106030201060102020603020b00010601020106010201060102010604020b00010202060302020603020b000b02";
@@ -130,24 +65,6 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
   let aBackground = "ded7ff";
 
-  let palette4 = [
-    "",
-    "000000",
-    "ffffff",
-    "9caec4",
-    "6c7887",
-    "00b083",
-    "00d2a2",
-    "442484",
-    "00d6ca",
-    "f13e87",
-    "407c6a",
-    "00d69f",
-  ];
-
-  fs.writeFileSync("./parts/AdvocateParts.json", JSON.stringify(aParts));
-  fs.writeFileSync("./parts/aBG.json", JSON.stringify(aBackground));
-
   let body =
     "0x0016171f0905020903030203030104020505030202020302060304020603030102010603000506020001060103010201060a000106010302060a000206020501000102010602030200010201030106020301020103010001020106020302000102010301060203010201030100010202060103020001020103010602030102010301000106010401050106020003060203";
   let accessory =
@@ -156,34 +73,19 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     "0x000216140a01060b0001060b0001060b00010602000502010302000106010601000402040301000106010604020603010601060302070301060302090302020a0301020b0301020b0301020b0302020a03030209030100020208030100010001050206010503060105010601050100010002050306010503060105010001000102090401000100040206030100";
   let glasses =
     "0x0009170e0703000606010006060300010602070201010601000106020702010106040602070201030602070201010601060200010602070201010601000106020702010106010602000106020702010106010001060207020101060300060601000606";
-  //let name = "GTC UBER-NOUN";
-  let description = "Gitcoin GR12 Limited Edition Noun";
-  let palette = [
-    "",
-    "000000",
-    "f13e87",
-    "8145d2",
-    "00b083",
-    "00d2a2",
-    "442484",
-    "ffffff",
-    "00d6ca",
-  ];
 
   let parts = [body, accessory, head, glasses];
 
   let background = "b294ed";
 
-  await deploy("GTC_UBER_NOUN", {
+  await deploy("GTC_UBER_NOUNS", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // prettier-ignore
-    args: [parts,
-    parts1,
+    args: [parts1,
     pParts,
     sParts,
     aParts,
-    background,
     devBackground,
     pBackground,
     sBackground,
@@ -192,8 +94,18 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     log: true,
   });
 
+  /* uLength = body.length + accessory.length + head.length + glasses.length;
+  aLength = aBody.length + aCessory.length + aHead.length + aGlasses.length;
+  dLength =
+    devBody.length + devCessory.length + devHead.length + devGlasses.length;
+  sLength = sBody.length + sCessory.length + sHead.length + sGlasses.length;
+  pLength =
+    punkBody.length + punkCessory.length + punkHead.length + punkGlasses.length;
+
+  console.log(uLength + aLength + dLength + sLength + pLength); */
+
   // Getting a previously deployed contract
-  const YourContract = await ethers.getContract("GTC_UBER_NOUN", deployer);
+  const YourContract = await ethers.getContract("GTC_UBER_NOUNS", deployer);
   /*  await YourContract.setPurpose("Hello");
   
     To take ownership of yourContract using the ownable library uncomment next line and add the 

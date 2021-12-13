@@ -53,7 +53,10 @@ const Faq = () => {
         <h4>Where's the Contract?</h4>
         <br />
         <br />
-        <a href="placeholder">read the contract</a>
+        <a href="https://etherscan.io/address/0x18535414AeB2993e8E2cab33147413a3D6b0194c">Read the Contract</a>
+        <br />
+        <br />
+        <a href="https://opensea.io/collection/gtcnounbots">View the Collection on Opensea</a>
         <br />
         <br />
       </div>

@@ -117,17 +117,15 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
     event Wtf(address winner, uint256 amount);
 
     constructor(
-        bytes[] memory _gunParts,
         bytes[] memory _devParts,
         bytes[] memory _pParts,
         bytes[] memory _sParts,
         bytes[] memory _aParts,
-        string memory _background,
         string memory _dBackground,
         string memory _pBackground,
         string memory _sBackground,
         string memory _aBackground
-    ) ERC721("GTC UBER-NOUNS", "GUN") {
+    ) ERC721("GTC UBER NOUNBOTS", "GUN") {
         // Ownership to nowonder to initCollection and startAuction
         transferOwnership(0xb010ca9Be09C382A9f31b79493bb232bCC319f01);
 
@@ -165,16 +163,6 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
                 description: "PUBLIC GOODS R GOOD!",
                 parts: _aParts,
                 background: _aBackground
-            })
-        );
-
-        // Make sure GUN is last
-        tParams.push(
-            TokenURIParams({
-                name: "UBER-NOUNBOT",
-                description: "THE VEWY WAWEST NOUNBOT",
-                parts: _gunParts,
-                background: _background
             })
         );
     }
@@ -406,8 +394,21 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
      * @notice Mint (4) in collection to GTC Maintainer,
       to distribute to select winners from GR12
      */
-    function initCollection() external onlyOwner {
+    function initCollection(bytes[] calldata gunParts, string memory bg)
+        external
+        onlyOwner
+    {
         require(_tokenIds.current() == 0, "Collection of 5");
+
+        // Add Uber manually, doesn't fit in constructor.
+        tParams.push(
+            TokenURIParams({
+                name: "UBER NOUNBOT",
+                description: "THE VEWY WAWEST NOUNBOT",
+                parts: gunParts,
+                background: bg
+            })
+        );
 
         addManyColorsToPalette(0, dPalette);
         addManyColorsToPalette(1, pPalette);
@@ -425,7 +426,7 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Mint Uber to GTC Maintainer in case of auction failure
      */
-    function recoverUber() external onlyOwner {
+    function recoverUber() public onlyOwner {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(_tokenIds.current() == 4, "initCollection first");
 
@@ -438,7 +439,7 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
     /**
      * @notice Start Auction with Default Params
      */
-    function startAuction() external onlyOwner {
+    function startAuction() public onlyOwner {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(_tokenIds.current() == 4, "initCollection first");
 
@@ -454,10 +455,11 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
         uint256 _seconds,
         uint256 _startingPrice,
         uint256 _priceDeduction
-    ) external onlyOwner {
+    ) public onlyOwner {
         require(_tokenIds.current() < limit, "Only one.. wtf?");
         require(_tokenIds.current() == 4, "initCollection first");
 
+        publicGoodsFunded = false;
         startingPrice = _startingPrice;
         priceDeductionRate = _priceDeduction;
         mintDeadline = block.timestamp + _seconds;
@@ -466,9 +468,7 @@ contract GTC_UBER_NOUNS is ERC721, ReentrancyGuard, Ownable {
     }
 
     function buy(address buyer) private returns (uint256) {
-        require(auctionStarted == true, "Auction not started");
         require(_tokenIds.current() < limit, "Only one.. wtf?");
-        require(block.timestamp < mintDeadline, "auction expired, wtf");
 
         _tokenIds.increment();
 

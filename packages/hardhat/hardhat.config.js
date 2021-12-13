@@ -26,9 +26,9 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 //
 // Select the network you want to deploy to here:
 //
-const defaultNetwork = "matic";
+const defaultNetwork = "mainnet";
 
-const mainnetGwei = 21;
+const mainnetGwei = 75;
 
 function mnemonic() {
   try {
@@ -118,7 +118,7 @@ module.exports = {
       },
     },
     mainnet: {
-      url: "https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
+      url: "https://eth-mainnet.alchemyapi.io/v2/6sSoZ_Jqr8jpqhEmnTpvVJkhYF4XsonH", // <---- YOUR INFURA ID! (or it won't work)
 
       //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/mainnet", // <---- YOUR MORALIS ID! (not limited to infura)
 

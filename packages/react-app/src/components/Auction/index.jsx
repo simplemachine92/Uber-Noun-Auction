@@ -41,7 +41,7 @@ export default function Auction({
                 <Button
                   type="primary"
                   onClick={async () => {
-                    tx(writeContracts.GTC_UBER_NOUN.requestBuy({ value: priceToMint }));
+                    tx(writeContracts.GTC_UBER_NOUNS.requestBuy({ value: priceToMint }));
                   }}
                 >
                   MINT Ξ {priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}
@@ -74,7 +74,7 @@ export default function Auction({
     //             <Button
     //               type="primary"
     //               onClick={async () => {
-    //                 tx(writeContracts.GTC_UBER_NOUN.buy({ value: priceToMint }));
+    //                 tx(writeContracts.GTC_UBER_NOUNS.buy({ value: priceToMint }));
     //               }}
     //             >
     //               MINT for Ξ{priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}

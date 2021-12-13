@@ -163,7 +163,7 @@ function App(props) {
   ]);
 
   // keep track of a variable from the contract in the local React state:
-  const priceToMint = useContractReader(readContracts, "GTC_UBER_NOUN", "currentPrice");
+  const priceToMint = useContractReader(readContracts, "GTC_UBER_NOUNS", "currentPrice");
   /*
   const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
   console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
@@ -283,7 +283,7 @@ function App(props) {
         </Route>
         <Route exact path="/debug">
           <Contract
-            name="GTC_UBER_NOUN"
+            name="GTC_UBER_NOUNS"
             price={price}
             signer={userSigner}
             provider={localProvider}
