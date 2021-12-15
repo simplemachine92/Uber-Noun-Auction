@@ -4,13 +4,10 @@ import "./Faq.css";
 const Faq = () => {
   return (
     <div className="bg-blue-200 flex-wrapper">
-      <audio id="player" controls src="sugarplum.mp3" autoPlay loop />
       <div className="bg-blue-200 p-200 margin-top 40">
         <br />
         <h4>faq</h4>
         <br />
-        <br />
-        <img className="p-200" src="allnouns.jpg" />
         <br />
         <h4>What the heck is this?</h4>
         <br />
@@ -18,6 +15,14 @@ const Faq = () => {
         This is a collaborative experiment between Gitcoin and NounsDAO. If you would like more information
         <br />
         <a href="https://nouns.wtf/vote/21">Click Here</a>
+        <br />
+        <br />
+        <h4>What happens to the other NounBots?</h4>
+        <br />
+        <br />
+        The remaining NounBots will go to winners that the Nouns community selects from each Gitcoin Grants Round 12
+        category (Climate, Advocacy, Longevity, Ethereum), in a limited edition NFT crossover event.{" "}
+        <a href="https://twitter.com/noun12LFG/status/1469014196138487811">Read More</a>
         <br />
         <br />
         <h4>Authors: </h4>
@@ -40,14 +45,6 @@ const Faq = () => {
         <br />
         <br />
         <a href="https://nouns.wtf/">NounsDAO for their generous contribution to GR 12, long live public goods.</a>
-        <br />
-        <br />
-        <h4>What happens to the other NounBots?</h4>
-        <br />
-        <br />
-        The remaining NounBots will go to winners that the Nouns community selects from each Gitcoin Grants Round 12
-        category (Climate, Advocacy, Longevity, Ethereum), in a limited edition NFT crossover event.{" "}
-        <a href="https://twitter.com/noun12LFG/status/1469014196138487811">Read More</a>
         <br />
         <br />
         <h4>Where's the Contract?</h4>

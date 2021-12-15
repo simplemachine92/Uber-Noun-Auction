@@ -24,35 +24,17 @@ export default function Auction({
   };
 
   return (
-    <div className="flex-wrapper">
-      <div className="p-200 margin-top 20">
-        <Row gutter={2}>
-          <img className="logo_moonshot" src="ubernoun.png" />
-          <Col span={14}>
-            <div style={{ paddingLeft: 40, paddingTop: 0, paddingRight: 0 }}>
-              <div className="bg-gift1 h-20 bg-no-repeat bg-cover w-4/4"></div>
-              <Card style={cardStyle} title="" bordered={false}>
-                <h3>DUTCH AUCTION HAS SLOWED 🐌</h3>
-                <br />
-                <h2>DECREASING BY ~Ξ0.25 / Minute</h2>
-                <h2>ENDING ~1PM CST 12/15</h2>
-
-                <Button
-                  type="primary"
-                  onClick={async () => {
-                    tx(writeContracts.GTC_UBER_NOUNS.requestBuy({ value: priceToMint }));
-                  }}
-                >
-                  MINT Ξ {priceToMint && (+ethers.utils.formatEther(priceToMint)).toFixed(4)}
-                </Button>
-                <br />
-                <h2>❤️ 100% Proceeds To Public Goods ❤️</h2>
-                <h2>❤️ and 100% On-Chain ❤️</h2>
-              </Card>
-            </div>
-          </Col>
-        </Row>
-      </div>
+    <div className="">
+      <h3>Auction concluded</h3>
+      <br></br>
+      <h3>Congrats to MomusCollection</h3>
+      <img className="logo_moonshot" src="together.png" />
+      <br></br>
+      <h3>
+        <a href="https://opensea.io/assets/0x18535414aeb2993e8e2cab33147413a3d6b0194c/5">
+          Click here to see the Uber Nounbot on OpenSea!
+        </a>
+      </h3>
     </div>
 
     // <div className="App">
