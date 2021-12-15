@@ -32,11 +32,10 @@ export default function Auction({
             <div style={{ paddingLeft: 40, paddingTop: 0, paddingRight: 0 }}>
               <div className="bg-gift1 h-20 bg-no-repeat bg-cover w-4/4"></div>
               <Card style={cardStyle} title="" bordered={false}>
-                <h3>DUTCH AUCTION STARTS AT</h3>
+                <h3>DUTCH AUCTION HAS SLOWED 🐌</h3>
                 <br />
-                <br />
-                <h3>Ξ999,999</h3>
-                <h2>DECREASING BY Ξ1.6534 / Second</h2>
+                <h2>DECREASING BY ~Ξ0.25 / Minute</h2>
+                <h2>ENDING ~1PM CST 12/15</h2>
 
                 <Button
                   type="primary"

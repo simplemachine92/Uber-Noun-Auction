@@ -47,7 +47,7 @@ const Faq = () => {
         <br />
         The remaining NounBots will go to winners that the Nouns community selects from each Gitcoin Grants Round 12
         category (Climate, Advocacy, Longevity, Ethereum), in a limited edition NFT crossover event.{" "}
-        <a href="https://nouns.wtf/vote/21">Read More</a>
+        <a href="https://twitter.com/noun12LFG/status/1469014196138487811">Read More</a>
         <br />
         <br />
         <h4>Where's the Contract?</h4>
